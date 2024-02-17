@@ -18,6 +18,34 @@ struct ContentView: View {
                 .foregroundStyle(.tint)
             
             Text("Hello, world!")
+            
+            switch whisperViewModel.loadingState {
+            case .invalid:
+                Text("About to load")
+            case .loading:
+                ProgressView()
+            case .done:
+                Button(whisperViewModel.isRecording ? "Stop" : "Record") {
+                    whisperViewModel.toggle()
+                }
+            }
+            
+            
+            VStack {
+                
+                ForEach(whisperViewModel.confirmedSegments, id: \.id) { confirmedSegment in
+                    Text("\(confirmedSegment.text)")
+                }
+                
+                ForEach(whisperViewModel.unconfirmedSegments, id: \.id) { segment in
+                    Text(segment.text)
+                }
+                
+                Divider()
+                
+                Text(whisperViewModel.currentText)
+            }
+            
         }
         .padding()
         .onAppear {
