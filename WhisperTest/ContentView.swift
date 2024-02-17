@@ -9,14 +9,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var whisperViewModel = WhisperViewModel()
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
+            
             Text("Hello, world!")
         }
         .padding()
+        .onAppear {
+            whisperViewModel.loadModel()
+        }
     }
 }
 

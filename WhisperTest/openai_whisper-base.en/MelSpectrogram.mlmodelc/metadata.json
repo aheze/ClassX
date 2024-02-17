@@ -1,0 +1,71 @@
+[
+  {
+    "metadataOutputVersion" : "3.0",
+    "storagePrecision" : "Float16",
+    "outputSchema" : [
+      {
+        "hasShapeFlexibility" : "0",
+        "isOptional" : "0",
+        "dataType" : "Float16",
+        "formattedType" : "MultiArray (Float16 1 × 80 × 1 × 3000)",
+        "shortDescription" : "",
+        "shape" : "[1, 80, 1, 3000]",
+        "name" : "melspectrogram_features",
+        "type" : "MultiArray"
+      }
+    ],
+    "modelParameters" : [
+
+    ],
+    "specificationVersion" : 8,
+    "mlProgramOperationTypeHistogram" : {
+      "Ios17.mul" : 2,
+      "Ios17.sub" : 1,
+      "Ios17.matmul" : 1,
+      "Ios17.conv" : 2,
+      "Ios17.log" : 1,
+      "Ios17.add" : 3,
+      "Ios16.square" : 2,
+      "Ios17.sliceByIndex" : 1,
+      "Ios17.expandDims" : 4,
+      "Ios17.maximum" : 1,
+      "Ios16.reduceMax" : 1,
+      "Ios17.squeeze" : 2,
+      "Ios17.reshape" : 2,
+      "Identity" : 1,
+      "Pad" : 1
+    },
+    "computePrecision" : "Mixed (Float16, Float32, Int32)",
+    "isUpdatable" : "0",
+    "availability" : {
+      "macOS" : "14.0",
+      "tvOS" : "17.0",
+      "visionOS" : "1.0",
+      "watchOS" : "10.0",
+      "iOS" : "17.0",
+      "macCatalyst" : "17.0"
+    },
+    "modelType" : {
+      "name" : "MLModelType_mlProgram"
+    },
+    "userDefinedMetadata" : {
+      "com.github.apple.coremltools.source_dialect" : "TorchScript",
+      "com.github.apple.coremltools.source" : "torch==2.1.2",
+      "com.github.apple.coremltools.version" : "7.1"
+    },
+    "inputSchema" : [
+      {
+        "hasShapeFlexibility" : "0",
+        "isOptional" : "0",
+        "dataType" : "Float16",
+        "formattedType" : "MultiArray (Float16 480000)",
+        "shortDescription" : "",
+        "shape" : "[480000]",
+        "name" : "audio",
+        "type" : "MultiArray"
+      }
+    ],
+    "generatedClassName" : "MelSpectrogram",
+    "method" : "predict"
+  }
+]
