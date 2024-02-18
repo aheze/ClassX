@@ -17,7 +17,7 @@ struct VisualizationDetail: View {
         VStack(spacing: 0) {
             HStack {
                 Spacer()
-                
+
                 Button {
                     dismissWindow()
                 } label: {
@@ -27,8 +27,6 @@ struct VisualizationDetail: View {
             }
             .padding(.horizontal, 32)
             .padding(.vertical, 14)
-            
-            Divider()
 
             ScrollView {
                 VStack {

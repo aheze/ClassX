@@ -39,7 +39,7 @@ struct VisualizationsView: View {
                 .drawingGroup()
                 .padding(.horizontal, 24)
             } else {
-                ForEach(Array(zip(displayedVisualizations.indices, displayedVisualizations)), id: \.1.id) { index, visualization in
+                ForEach(displayedVisualizations) { visualization in
 
                     switch visualization.visualizationType {
                     case .latex:
@@ -49,13 +49,9 @@ struct VisualizationsView: View {
                     case .image:
                         ImageVisualization(urlString: visualization.mainBody ?? "")
                     case .plainText:
-                        contextButton(title: "More Context", color: .orange, visualization: visualization)
+                        contextButton(title: "More Context", color: .red, visualization: visualization)
                     case .bullet:
                         contextButton(title: "Further Reading", color: .purple, visualization: visualization)
-                    }
-
-                    if index < displayedVisualizations.count - 1 {
-                        Divider()
                     }
                 }
             }
@@ -72,7 +68,7 @@ struct VisualizationsView: View {
             VStack(alignment: .leading, spacing: 30) {
                 HStack {
                     Spacer()
-                    
+
                     Image(systemName: "arrow.up.right")
                         .font(.system(size: 32))
                 }

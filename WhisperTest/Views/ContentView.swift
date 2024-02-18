@@ -175,8 +175,8 @@ struct ContentView: View {
                     }
                 }
                 .font(.system(size: 24))
-                .padding(.horizontal, 48)
-                .padding(.vertical, 24)
+                .padding(.horizontal, 24)
+                .padding(.vertical, 14)
                 .background {
                     Capsule()
                         .fill(.green.gradient)
