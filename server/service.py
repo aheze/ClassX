@@ -56,6 +56,18 @@ class OpenAI:
             return response
         return [x.embedding for x in response.data]
     
+    @classmethod
+    def chat(cls, prompt, return_all=False, **kwargs):
+        res = cls.client.chat.completions.create(
+            model="gpt-4-0125-preview",
+            messages=prompt,
+            **kwargs
+        )
+        
+        if return_all:
+            return res
+        return res.choices[0].message.content
+    
 class Chroma:
     client = chromadb.PersistentClient(path="content/vectordb")
     collection = client.get_or_create_collection("classx", metadata={"hnsw:space": "cosine"})
@@ -189,15 +201,44 @@ Teach me in 3 ascending levels of difficulty with LaTeX, Markdown, examples, and
 
 Rules:
 1. No inline LaTeX ($A$), only block LaTeX ($$ A $$).
+2. Max 100 words per level.
 
 [/INST]
 """.strip()
+
+    @staticmethod
+    def recitation_to_manim(recitation: str):
+        
+        return [
+        {
+            "role": "user",
+            "content": f"""You are a world-class math teacher and engineer. Translate a rough lecture script into working, best-practices community Manim Python -- a static scene or a 2-4s short animation.
+
+Your lecture script:
+===
+{recitation}
+===
+
+Rules:
+1. Max animation is 4 seconds, be strict. Output code ONLY.
+2. Never let rendered area surpass bounding window. Obey margins, spacing, flex, grid setup, etc.
+3. Use the class signature:
+
+```py
+class GeneratedGIF(Scene):
+  pass
+```
+
+4. Follow best visual design practices like color, UX, headers, differenciation, etc.
+5. Use newest (Apr 2023) Manim spec, i.e. Create() not ShowCreation().
+6. Never use complex LaTeX (no begin document, center).
+""".strip()}]
 
 # Swift structs from Vision Pro for I/O
 
 class Visualization(BaseModel):
     id: str
-    visualizationType: Literal['latex', 'url', 'bullet']
+    visualizationType: Literal['latex', 'url', 'bullet', 'media']
     mainBody: str 
     
 class ServerResponse(BaseModel):
@@ -209,3 +250,23 @@ class WhisperUpload(BaseModel):
     id: str
     uploadNumber: int
     segments: List[str]
+    
+    
+class Manim:
+    @classmethod
+    def gen(cls, recitation: str):
+        """gen short 3b1b gif in Manim x GPT-4"""
+        completion = OpenAI.chat(Prompts.recitation_to_manim(recitation), max_tokens=1000)
+        raw_py = completion.split('```python')[-1].split('```py')[-1].split('```')[0].strip()
+        # pipe to python file
+        print(raw_py)
+        
+        with open('gen_manim.py', 'w') as f:
+            f.write(raw_py)
+        # run python file
+        os.system('manim -p -ql gen_manim.py GeneratedGIF -o manim.mp4')
+        
+        # url is cwd/media/videos/manim/480p15/manim.mp4
+        slug = '/media/videos/gen_manim/480p15/manim.mp4'
+        print(os.getcwd() + slug)
+        return slug
