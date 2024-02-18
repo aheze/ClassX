@@ -45,6 +45,7 @@ extension WhisperViewModel {
                     
                     self.currentUploadNumber += 1
                     
+                    print("Received data!!!!")
                     print(string)
                     
                 } catch {

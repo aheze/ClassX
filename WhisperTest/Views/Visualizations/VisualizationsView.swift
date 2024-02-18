@@ -12,11 +12,12 @@ struct VisualizationsView: View {
     @ObservedObject var whisperViewModel: WhisperViewModel
     
     var body: some View {
-        HStack {
+        VStack {
             ForEach(whisperViewModel.displayedVisualizations) { visualization in
                 switch visualization.visualizationType {
                 case .plainText:
                     Text("Plain text: \(visualization.mainBody ?? "")")
+                        .border(.green)
                 default:
                     Text("TODO!!")
                         .border(.red)

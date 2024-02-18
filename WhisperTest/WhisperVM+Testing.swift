@@ -40,8 +40,9 @@ extension WhisperViewModel {
                     confirmedSegments.append(segment)
                     
                     if testingConfiguration.useSnapshotsForVisualizations {
-                        if testingConfiguration.snapshots.indices.contains(index) {
-                            let visualizations = testingConfiguration.snapshots[index].visualizations
+                        print("using index: \(index - 1)")
+                        if testingConfiguration.snapshots.indices.contains(index - 1) {
+                            let visualizations = testingConfiguration.snapshots[index - 1].visualizations
                             displayVisualizations(visualizations: visualizations)
                         } else {
                             print("No visualizations??")
