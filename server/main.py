@@ -1,5 +1,7 @@
 from service import *
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
+import os
 import time
 
 app = FastAPI()
@@ -22,10 +24,16 @@ async def search(data: WhisperUpload):
 
     unique_results = SearchResult.set(results, by='id')
     
-    topk = [x.metadata for x in unique_results[:5]]
+    topk = [x.metadata for x in unique_results[:20]]
 
     # take top 3 scores. could be unique, or same lecture diff bullet.
-    urls = list(set([x['path'] for x in topk]))[:3]
+    # urls = list(set([x['path'] for x in topk]))[:3]
+    
+    # take urls of best 3b1b and mit results
+    first_3b1b = next((x for x in topk if x['source'] == '3b1b'), None)
+    first_mit = next((x for x in topk if x['source'] == 'mit'), None)
+    
+    urls = [x['path'] for x in [first_3b1b, first_mit] if x]
 
     bullets = "\n".join(["- " + x['bullet'] for x in topk])
 
@@ -40,11 +48,23 @@ async def search(data: WhisperUpload):
             id=url, visualizationType="url", mainBody=url) for url in urls],
          Visualization(
             id=f"recitation_{int(time.time())}", visualizationType="latex", mainBody=gen_recitation),
-         Visualization(
-            id=f"bullets_{int(time.time())}", visualizationType="bullet", mainBody=bullets)
+        #  Visualization(
+        #     id=f"bullets_{int(time.time())}", visualizationType="bullet", mainBody=bullets)
     ]
     
     return ServerResponse(visualizations=visuals, id=data.id, uploadNumber=data.uploadNumber)
+
+@app.post('/video')
+async def video(data: WhisperUpload):
+    transcript = "\n".join(data.segments)
+    slug = Manim.gen(transcript)
+    # media type is hosted on this content server. url is base/slug
+    visual = Visualization(id=f"video-{int(time.time())}", visualizationType="media", mainBody=slug)
+    return ServerResponse(visualizations=[visual], id=data.id, uploadNumber=data.uploadNumber)
+
+@app.get("/file/{name_file:path}")
+async def get_file(name_file: str):
+    return FileResponse(path=os.getcwd() + "/" + name_file)
 
 @app.get('/')
 async def ping():

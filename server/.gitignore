@@ -2,3 +2,4 @@ content
 .env
 __pycache__
 *.pyc
+media
