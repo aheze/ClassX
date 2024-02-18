@@ -24,7 +24,7 @@ struct TranscriptView: View {
                                 whisperViewModel.currentFocusedSegmentID = confirmedSegment.id
                             }
                         } label: {
-                            Text("\(confirmedSegment.text)")
+                            Text(confirmedSegment.text.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil))
                                 .foregroundColor(whisperViewModel.currentFocusedSegmentID == confirmedSegment.id ? .green : .white)
                                 .padding(.vertical, 12)
                                 .padding(.horizontal, 32)
@@ -34,7 +34,7 @@ struct TranscriptView: View {
 
                     VStack {
                         ForEach(whisperViewModel.unconfirmedText, id: \.self) { text in
-                            Text(text)
+                            Text(text.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil))
                                 .opacity(0.25)
                                 .padding(.vertical, 12)
                                 .padding(.horizontal, 32)
@@ -56,9 +56,9 @@ struct TranscriptView: View {
             }
             .animation(.spring(response: 0.2, dampingFraction: 1, blendDuration: 1), value: whisperViewModel.currentText)
             .animation(.spring, value: whisperViewModel.confirmedSegments.count)
-            .font(.system(size: 42))
+            .font(.system(size: 32))
             .fontWeight(.bold)
-            .padding(.vertical, 24)
+            .padding(.vertical, 18)
             .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0)
         }
         .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0)

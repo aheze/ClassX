@@ -32,7 +32,8 @@ class WhisperViewModel: ObservableObject {
 
     @Published var isRecording = false
     @Published var isTranscribing = false
-    @Published var testingConfiguration: TestingConfiguration? = TestingConfiguration.mock
+//    @Published var testingConfiguration: TestingConfiguration? = TestingConfiguration.mock
+    @Published var testingConfiguration: TestingConfiguration? = nil
 
     // MARK: - Configuration
 

@@ -25,6 +25,8 @@ extension WhisperViewModel {
                     return
                 }
                 
+                
+                let confirmedSegments = confirmedSegments.suffix(10)
                 guard let last = confirmedSegments.last else { return }
                 
                 let segments = confirmedSegments.map { $0.text.trimmingCharacters(in: .whitespacesAndNewlines) }

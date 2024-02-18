@@ -31,7 +31,7 @@ struct ContentView: View {
 
     @State var animatingBlur = false
 
-    let minimumSideWidth = CGFloat(500)
+    let minimumSideWidth = CGFloat(260)
 
     var body: some View {
         let shown: Bool = {
@@ -48,6 +48,8 @@ struct ContentView: View {
 
         Color.clear
             .sizeReader { size in
+                print("size: \(size)")
+                
                 currentBoardSize = size
                 if allowShowNext {
                     if step == .resizingToFitBoard {
@@ -173,7 +175,7 @@ struct ContentView: View {
                             .padding()
                     }
                 }
-                .font(.system(size: 38))
+                .font(.system(size: 24))
                 .padding(.horizontal, 48)
                 .padding(.vertical, 24)
                 .background {
@@ -190,7 +192,7 @@ struct ContentView: View {
     var initialView: some View {
         VStack {
             Text("ClassX")
-                .font(.system(size: 64, weight: .medium, design: .monospaced))
+                .font(.system(size: 42, weight: .medium, design: .monospaced))
                 .kerning(10)
 
             Button {
@@ -206,7 +208,7 @@ struct ContentView: View {
 
             } label: {
                 Text("Begin")
-                    .font(.system(size: 48, weight: .medium))
+                    .font(.system(size: 24, weight: .medium))
                     .padding(.horizontal, 38)
                     .padding(.vertical, 24)
                     .background(
@@ -346,6 +348,8 @@ struct ContentView: View {
     func topView(shown: Bool) -> some View {
         HStack(spacing: 24) {
             Button {
+                print("go back!")
+                
                 withAnimation {
                     preservedBoardDimensions = nil
 
@@ -357,13 +361,13 @@ struct ContentView: View {
                 }
             } label: {
                 Image(systemName: "chevron.backward")
-                    .font(.system(size: 24, weight: .medium))
+                    .font(.system(size: 16, weight: .medium))
             }
 
             Text(shown ? "ClassX" : "Quick Setup")
                 .foregroundStyle(.secondary)
                 .textCase(.uppercase)
-                .font(.system(size: 32, weight: .semibold))
+                .font(.system(size: 24, weight: .semibold))
                 .padding(.vertical, 20)
         }
         .padding(.horizontal, 32)
@@ -376,15 +380,15 @@ struct ContentView: View {
         VStack(spacing: 48) {
             HStack(spacing: 20) {
                 Image(systemName: step == .resizingToAddContent ? "2.circle.fill" : "1.circle.fill")
-                    .font(.system(size: 64, weight: .medium))
+                    .font(.system(size: 48, weight: .medium))
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(step == .resizingToAddContent ? "Augment the board!" : "Resize to fit the board!")
-                        .font(.system(size: 44, weight: .medium))
+                        .font(.system(size: 36, weight: .medium))
 
                     Text("Drag the bottom-right corner")
                         .foregroundStyle(.secondary)
-                        .font(.system(size: 32, weight: .medium))
+                        .font(.system(size: 24, weight: .medium))
                 }
             }
             .offset(x: -20)
@@ -398,7 +402,7 @@ struct ContentView: View {
                     preservedBoardDimensions = currentBoardSize
                 } label: {
                     Text("Next")
-                        .font(.system(size: 48, weight: .medium))
+                        .font(.system(size: 24, weight: .medium))
                         .padding(.horizontal, 38)
                         .padding(.vertical, 24)
                         .background(

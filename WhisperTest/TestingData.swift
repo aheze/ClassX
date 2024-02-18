@@ -12,7 +12,7 @@ struct TestingConfiguration {
     var mockTranscript: String
     
     // use snapshots instead of uploading to server
-    var useSnapshotsForVisualizations = true
+    var useSnapshotsForVisualizations = false
     var snapshots: [Snapshot]
     
 
@@ -34,7 +34,11 @@ struct TestingConfiguration {
                     Visualization(id: UUID().uuidString, visualizationType: .plainText, mainBody: "Here is some plain text!")
                 ]
             ),
-            Snapshot(visualizations: []) // nothing for the 3rd line
+            Snapshot(
+                visualizations: [
+                    Visualization(id: UUID().uuidString, visualizationType: .image, mainBody: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Markovkate_01.svg/260px-Markovkate_01.svg.png"),
+                ]
+            ) // nothing for the 3rd line
         ]
     )
 }

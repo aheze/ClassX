@@ -15,23 +15,23 @@ struct VisualizationsView: View {
         let displayedVisualizations: [Visualization] = {
             if let currentFocusedSegmentID = whisperViewModel.currentFocusedSegmentID {
                 if let response = whisperViewModel.serverResponseBySegmentID[currentFocusedSegmentID] {
-                    return response.visualizations
+                    return response.visualizations.filter { $0.visualizationType != .bullet }
                 }
             }
 
-            return whisperViewModel.displayedVisualizations
+            return whisperViewModel.displayedVisualizations.filter { $0.visualizationType != .bullet }
         }()
 
         VStack(spacing: 0) {
             if displayedVisualizations.isEmpty {
                 VStack(spacing: 64) {
                     Text("ClassX")
-                        .font(.system(size: 64, weight: .medium, design: .monospaced))
+                        .font(.system(size: 48, weight: .medium, design: .monospaced))
                         .kerning(10)
 
                     Text("Sit tight while we make\nthis lecture more bearable!")
                         .multilineTextAlignment(.center)
-                        .font(.system(size: 36, weight: .medium))
+                        .font(.system(size: 32, weight: .medium))
                         .foregroundStyle(.secondary)
                 }
                 .drawingGroup()
@@ -64,6 +64,6 @@ struct VisualizationsView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.spring, value: displayedVisualizations.map { $0.id })
-        .font(.system(size: 38))
+        .font(.system(size: 24))
     }
 }
