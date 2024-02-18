@@ -29,6 +29,8 @@ struct ContentView: View {
     @State var preservedBoardDimensions: CGSize?
     @State var circleAnimations = [UUID]()
 
+    @State var animatingBlur = false
+    
     let minimumSideWidth = CGFloat(500)
 
     var body: some View {
@@ -76,6 +78,28 @@ struct ContentView: View {
                 }()
 
                 Color.clear
+                    .overlay {
+                        ZStack {
+                            Circle()
+                                .fill(Color.blue.gradient)
+                                .blur(radius: 300)
+                                .offset(x: animatingBlur ? 200 : -200)
+                            
+                            Circle()
+                                .fill(Color.purple.gradient)
+                                .blur(radius: 400)
+                                .offset(y: animatingBlur ? 100 : -100)
+                        }
+                        .aspectRatio(contentMode: .fill)
+                        .opacity(0.15)
+                        .onAppear {
+                            withAnimation(.spring.repeatForever(autoreverses: true)) {
+                                animatingBlur = true
+                            }
+                        }
+                    }
+                    .drawingGroup()
+                    .mask(RoundedRectangle(cornerRadius: 32))
                     .glassBackgroundEffect()
                     .frame(
                         maxWidth: maxWidth,
