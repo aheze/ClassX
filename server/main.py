@@ -30,8 +30,9 @@ async def search(data: WhisperUpload):
     # urls = list(set([x['path'] for x in topk]))[:3]
     
     # take urls of best 3b1b and mit results
-    first_3b1b = next((x for x in topk if x['source'] == '3b1b'), None)
-    first_mit = next((x for x in topk if x['source'] == 'mit'), None)
+    # mit unlabelled source by default. dirty.
+    first_3b1b = next((x for x in topk if x.get('source') == '3b1b'), None)
+    first_mit = next((x for x in topk if not x.get('source')), None)
     
     urls = [x['path'] for x in [first_3b1b, first_mit] if x]
 

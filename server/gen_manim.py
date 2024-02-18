@@ -2,27 +2,26 @@ from manim import *
 
 class GeneratedGIF(Scene):
     def construct(self):
-        # Define the text for the matrix and the question
-        title = Text("What's a Markov Matrix?", font_size=36)
-        matrix_text = MathTex("\\begin{bmatrix} 0.1 & 0.2 & 0.7 \\\\ 0.01 & 0.99 & 0 \\\\ 0.3 & 0.3 & 0.4 \\end{bmatrix}", font_size=28)
-        question = Text("What makes it a Markov matrix?", font_size=24)
-
-        # Align the elements
-        title.to_edge(UP, buff=0.5)
-        matrix_text.next_to(title, DOWN, buff=0.5)
-        question.next_to(matrix_text, DOWN, buff=0.5)
-
-        # Grouping for easy animation
-        all_elements = VGroup(title, matrix_text, question)
-
-        # Colors for highlighting
-        title.set_color(YELLOW)
-        matrix_text.set_color(GREEN)
-        question.set_color(BLUE)
-
-        # Animation
-        self.play(Create(all_elements), run_time=4)
-        self.wait()
-
-        # Ensure not to surpass bounding window
-        all_elements.scale(0.9)
+        # Define colors
+        matrix_color = YELLOW
+        header_color = BLUE
+        
+        # Header text
+        header_text = Text("Markov Matrix", color=header_color).scale(0.8)
+        header_text.to_edge(UP, buff=0.5)
+        
+        # Define the Markov matrix
+        matrix_values = [[0.1, 0.2, 0.7], [0.01, 0.99, 0.0], [0.3, 0.3, 0.4]]
+        matrix_mob = Matrix(matrix_values, v_buff=0.8).set_color(matrix_color)
+        
+        # Align matrix under header
+        matrix_mob.next_to(header_text, DOWN)
+        
+        # Group header and matrix for better control
+        group = VGroup(header_text, matrix_mob)
+        
+        # Ensure the group fits the scene without surpassing the bounding window
+        group.scale(0.9)
+        
+        self.play(Create(header_text), run_time=1)
+        self.play(Create(matrix_mob), run_time=3)
