@@ -22,7 +22,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3CA7757B2B80D977009C525C /* WhisperKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = WhisperKit; path = ../WhisperKit; sourceTree = "<group>"; };
 		3CA7757C2B81B736009C525C /* TestingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingData.swift; sourceTree = "<group>"; };
 		3CA7757E2B81BA7B009C525C /* TranscriptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptView.swift; sourceTree = "<group>"; };
 		3CA775832B81BDBB009C525C /* LatexVisualization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatexVisualization.swift; sourceTree = "<group>"; };
@@ -60,7 +59,6 @@
 		3CE0198E2B80C879007BB8ED = {
 			isa = PBXGroup;
 			children = (
-				3CA7757B2B80D977009C525C /* WhisperKit */,
 				3CE019992B80C879007BB8ED /* WhisperTest */,
 				3CE019982B80C879007BB8ED /* Products */,
 			);
