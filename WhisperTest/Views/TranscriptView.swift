@@ -10,7 +10,7 @@ import SwiftUI
 
 struct TranscriptView: View {
     @ObservedObject var whisperViewModel: WhisperViewModel
-    
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
@@ -18,39 +18,34 @@ struct TranscriptView: View {
                     ForEach(whisperViewModel.confirmedSegments, id: \.id) { confirmedSegment in
                         Text("\(confirmedSegment.text)")
                             .padding(.vertical, 12)
-                            .padding(.horizontal, 24)
+                            .padding(.horizontal, 32)
                     }
-                    
-//                    ForEach(whisperViewModel.unconfirmedSegments, id: \.id) { segment in
-//                        Text(segment.text)
-//                            .opacity(0.75)
-//                            .padding(.vertical, 12)
-//                            .padding(.horizontal, 24)
-//                    }
-//                    
+
                     VStack {
                         ForEach(whisperViewModel.unconfirmedText, id: \.self) { text in
                             Text(text)
                                 .opacity(0.25)
                                 .padding(.vertical, 12)
-                                .padding(.horizontal, 24)
+                                .padding(.horizontal, 32)
                         }
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                
+
                 Text(whisperViewModel.currentText.isEmpty ? " " : whisperViewModel.currentText.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil))
                     .contentTransition(.interpolate)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .opacity(0.5)
                     .frame(minHeight: 100, alignment: .top)
                     .padding(.vertical, 12)
-                    .padding(.horizontal, 24)
+                    .padding(.horizontal, 32)
             }
-            .font(.title3)
+            .font(.system(size: 42))
             .fontWeight(.bold)
             .padding(.vertical, 24)
+            .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0)
         }
+        .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0)
         .background {
             RoundedRectangle(cornerRadius: 36)
                 .fill(.regularMaterial)

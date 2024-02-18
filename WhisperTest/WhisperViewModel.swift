@@ -133,9 +133,26 @@ extension WhisperViewModel {
         isRecording.toggle()
 
         if isRecording {
-            startRecording()
+            start()
         } else {
             resetState()
+            end()
+        }
+    }
+    
+    func start() {
+        if let testingConfiguration {
+            startTestingScript()
+        } else {
+            startRecording()
+        }
+    }
+    
+    func end() {
+        resetState()
+        if let testingConfiguration {
+            
+        } else {
             stopRecording()
         }
     }
@@ -158,7 +175,7 @@ extension WhisperViewModel {
 //        unconfirmedSegments = []
     }
 
-    func startRecording() {
+    private func startRecording() {
         guard let whisperKit = whisperKit else { return }
 
         Task(priority: .userInitiated) {
@@ -177,7 +194,7 @@ extension WhisperViewModel {
         }
     }
 
-    func stopRecording() {
+    private func stopRecording() {
         guard let whisperKit = whisperKit else { return }
         whisperKit.audioProcessor.stopRecording()
     }

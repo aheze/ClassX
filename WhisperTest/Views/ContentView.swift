@@ -120,18 +120,6 @@ struct ContentView: View {
                 .animation(shown ? .linear(duration: 1.5) : .spring, value: shown)
             }
             .animation(.spring, value: step)
-
-//        } else {
-//            switch whisperViewModel.loadingState {
-//            case .invalid, .loading:
-//                ProgressView()
-//                    .scaleEffect(2)
-//            case .done:
-//                Button(whisperViewModel.isRecording ? "Stop" : "Record") {
-//                    whisperViewModel.toggle()
-//                }
-//            }
-//        }
             .onAppear {
                 whisperViewModel.loadModel()
             }
@@ -191,6 +179,8 @@ struct ContentView: View {
         .onChange(of: shown) { newValue in
 
             if newValue {
+                whisperViewModel.start()
+
                 withAnimation {
                     circleAnimations.append(UUID())
                 }
@@ -201,6 +191,8 @@ struct ContentView: View {
                     }
                 }
             } else {
+                whisperViewModel.end()
+
                 withAnimation {
                     circleAnimations = []
                 }
@@ -250,13 +242,33 @@ struct ContentView: View {
     func augmentedView(preservedBoardDimensions: CGSize, shown: Bool) -> some View {
         HStack {
             Color.clear
+                .overlay {
+                    switch whisperViewModel.loadingState {
+                    case .invalid, .loading:
+                        ProgressView()
+                            .scaleEffect(2)
+                    default:
+                        TranscriptView(whisperViewModel: whisperViewModel)
+                    }
+                }
                 .glassBackgroundEffect()
+                .frame(minWidth: minimumSideWidth)
 
             Color.clear
                 .frame(width: preservedBoardDimensions.width)
 
             Color.clear
+                .overlay {
+                    switch whisperViewModel.loadingState {
+                    case .invalid, .loading:
+                        ProgressView()
+                            .scaleEffect(2)
+                    default:
+                        VisualizationsView(whisperViewModel: whisperViewModel)
+                    }
+                }
                 .glassBackgroundEffect()
+                .frame(minWidth: minimumSideWidth)
         }
         .frame(height: preservedBoardDimensions.height)
     }
