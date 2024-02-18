@@ -26,15 +26,6 @@
         "revision" : "564442fba36b0b694d730a62d0593e5f54043b55",
         "version" : "0.1.2"
       }
-    },
-    {
-      "identity" : "whisperkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/aheze/WhisperKit",
-      "state" : {
-        "branch" : "main",
-        "revision" : "a171aa426fdbcc96e1e4890d0e770a004bc79266"
-      }
     }
   ],
   "version" : 2

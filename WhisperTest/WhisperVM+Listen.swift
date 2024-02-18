@@ -1,7 +1,7 @@
 //
 //  WhisperVM+Listen.swift
 //  WhisperTest
-//  
+//
 //  Created by Andrew Zheng (github.com/aheze) on 2/18/24.
 //  Copyright © 2024 Andrew Zheng. All rights reserved.
 //
@@ -10,15 +10,26 @@ import SwiftUI
 
 extension WhisperViewModel {
     func listen() {
+        // upload
+        reactToSegmentsChange()
+    }
+    
+    func reactToSegmentsChange() {
         $confirmedSegments
             .dropFirst()
             .throttle(for: .seconds(8), scheduler: RunLoop.main, latest: true)
             .sink { [weak self] confirmedSegments in
                 guard let self else { return }
 
+                if let testingConfiguration = self.testingConfiguration, testingConfiguration.useSnapshotsForVisualizations {
+                    return
+                }
+                
+                guard let last = confirmedSegments.last else { return }
                 
                 let segments = confirmedSegments.map { $0.text.trimmingCharacters(in: .whitespacesAndNewlines) }
-                let upload = WhisperUpload(uploadNumber: self.currentUploadNumber, segments: segments)
+                
+                let upload = WhisperUpload(id: last.id, uploadNumber: self.currentUploadNumber, segments: segments)
                 
                 let encoder = JSONEncoder()
                 encoder.outputFormatting = .prettyPrinted
@@ -75,8 +86,21 @@ extension WhisperViewModel {
                     
                     let serverResponse = try decoder.decode(ServerResponse.self, from: data)
                     
+                    DispatchQueue.main.async {
+                        self.serverResponseBySegmentID[serverResponse.id] = serverResponse
+                        
+                        if let currentFocusedSegmentID = self.currentFocusedSegmentID {
+                        } else {
+                            let isLatest = self.confirmedSegments.last?.id == serverResponse.id
+                            print("isLatest? \(isLatest)")
+                            if isLatest {
+                                self.displayVisualizations(visualizations: serverResponse.visualizations)
+                            }
+                        }
+                    }
+                    
                     print("serverResponse: \(serverResponse)")
-                } catch let error {
+                } catch {
                     print("Failed to parse JSON:", error)
                 }
             }

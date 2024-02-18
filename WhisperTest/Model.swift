@@ -26,7 +26,7 @@ enum VisualizationType: String, Codable {
     case bullet
 }
 
-struct Visualization: Codable {
+struct Visualization: Codable, Identifiable {
     // a unique identifier. No two visualizations should have the same ID.
     var id: String
     

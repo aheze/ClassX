@@ -11,6 +11,8 @@
 		3C27F30C2B81EF2D00F0DA28 /* SwiftMath in Frameworks */ = {isa = PBXBuildFile; productRef = 3C27F30B2B81EF2D00F0DA28 /* SwiftMath */; };
 		3C27F3102B81F1C700F0DA28 /* WhisperVM+Visualizations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C27F30F2B81F1C700F0DA28 /* WhisperVM+Visualizations.swift */; };
 		3C27F3122B81F79600F0DA28 /* WhisperVM+Listen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C27F3112B81F79600F0DA28 /* WhisperVM+Listen.swift */; };
+		3C2B38032B81FCF5000C0063 /* VisualizationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2B38022B81FCF5000C0063 /* VisualizationsView.swift */; };
+		3C2B38052B81FDB4000C0063 /* WhisperVM+Testing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2B38042B81FDB4000C0063 /* WhisperVM+Testing.swift */; };
 		3CA775782B80D970009C525C /* WhisperKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA775772B80D970009C525C /* WhisperKit */; };
 		3CA7757A2B80D970009C525C /* transcribe in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA775792B80D970009C525C /* transcribe */; };
 		3CA7757D2B81B736009C525C /* TestingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA7757C2B81B736009C525C /* TestingData.swift */; };
@@ -30,6 +32,9 @@
 		3C27F30D2B81EF5300F0DA28 /* SwiftMath */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SwiftMath; path = ../Clones/SwiftMath; sourceTree = "<group>"; };
 		3C27F30F2B81F1C700F0DA28 /* WhisperVM+Visualizations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WhisperVM+Visualizations.swift"; sourceTree = "<group>"; };
 		3C27F3112B81F79600F0DA28 /* WhisperVM+Listen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WhisperVM+Listen.swift"; sourceTree = "<group>"; };
+		3C2B38012B81FB4E000C0063 /* WhisperKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = WhisperKit; path = ../WhisperKit; sourceTree = "<group>"; };
+		3C2B38022B81FCF5000C0063 /* VisualizationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizationsView.swift; sourceTree = "<group>"; };
+		3C2B38042B81FDB4000C0063 /* WhisperVM+Testing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WhisperVM+Testing.swift"; sourceTree = "<group>"; };
 		3CA7757C2B81B736009C525C /* TestingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingData.swift; sourceTree = "<group>"; };
 		3CA7757E2B81BA7B009C525C /* TranscriptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptView.swift; sourceTree = "<group>"; };
 		3CA775832B81BDBB009C525C /* LatexVisualization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatexVisualization.swift; sourceTree = "<group>"; };
@@ -70,6 +75,7 @@
 		3CA775852B81BDBE009C525C /* Visualizations */ = {
 			isa = PBXGroup;
 			children = (
+				3C2B38022B81FCF5000C0063 /* VisualizationsView.swift */,
 				3CA775832B81BDBB009C525C /* LatexVisualization.swift */,
 			);
 			path = Visualizations;
@@ -78,6 +84,7 @@
 		3CE0198E2B80C879007BB8ED = {
 			isa = PBXGroup;
 			children = (
+				3C2B38012B81FB4E000C0063 /* WhisperKit */,
 				3C27F30D2B81EF5300F0DA28 /* SwiftMath */,
 				3CE019992B80C879007BB8ED /* WhisperTest */,
 				3CE019982B80C879007BB8ED /* Products */,
@@ -100,6 +107,7 @@
 				3C27F3082B81E4FB00F0DA28 /* Model.swift */,
 				3CA7757C2B81B736009C525C /* TestingData.swift */,
 				3CE019AD2B80C8F8007BB8ED /* WhisperViewModel.swift */,
+				3C2B38042B81FDB4000C0063 /* WhisperVM+Testing.swift */,
 				3C27F3112B81F79600F0DA28 /* WhisperVM+Listen.swift */,
 				3C27F30F2B81F1C700F0DA28 /* WhisperVM+Visualizations.swift */,
 				3C27F30E2B81F16300F0DA28 /* Views */,
@@ -208,6 +216,8 @@
 				3C27F3102B81F1C700F0DA28 /* WhisperVM+Visualizations.swift in Sources */,
 				3C27F3122B81F79600F0DA28 /* WhisperVM+Listen.swift in Sources */,
 				3CA775842B81BDBB009C525C /* LatexVisualization.swift in Sources */,
+				3C2B38032B81FCF5000C0063 /* VisualizationsView.swift in Sources */,
+				3C2B38052B81FDB4000C0063 /* WhisperVM+Testing.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

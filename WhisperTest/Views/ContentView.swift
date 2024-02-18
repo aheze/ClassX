@@ -38,9 +38,15 @@ struct ContentView: View {
             
             Divider()
             
-            TranscriptView(whisperViewModel: whisperViewModel)
-                .frame(maxHeight: 500)
-                .padding()
+            
+            HStack {
+                TranscriptView(whisperViewModel: whisperViewModel)
+                    .frame(maxHeight: 500)
+                    .padding()
+             
+                VisualizationsView(whisperViewModel: whisperViewModel)
+            }
+            
         }
         .padding()
         .onAppear {

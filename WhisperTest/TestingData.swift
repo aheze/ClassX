@@ -10,7 +10,11 @@ import SwiftUI
 
 struct TestingConfiguration {
     var mockTranscript: String
+    
+    // use snapshots instead of uploading to server
+    var useSnapshotsForVisualizations = true
     var snapshots: [Snapshot]
+    
 
     struct Snapshot {
         var visualizations: [Visualization]
