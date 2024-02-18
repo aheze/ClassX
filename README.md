@@ -1,6 +1,10 @@
+# 👓 ClassX
+
+AI Classrooms in Vision Pro + GPT-4 Generative 3b1b Videos
+
 ![ClassX Interface](./pi_transparent.png)
 
-# ClassX: AI Classrooms in Vision Pro + GPT-4 Generative 3b1b Videos
+[![ClassX Transcript](./ClassXGif.gif)](https://www.youtube.com/watch?v=sDBUnMgTQcU)
 
 _Submitted to TreeHacks 2024, Andrew Zheng_
 
