@@ -41,6 +41,13 @@ struct ContentView: View {
                     Text(segment.text)
                 }
                 
+                VStack {
+                    ForEach(whisperViewModel.unconfirmedText, id: \.self) { text in
+                        Text(text)
+                    }
+                }
+                .border(.green)
+                
                 Divider()
                 
                 Text(whisperViewModel.currentText)
