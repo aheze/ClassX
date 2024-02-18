@@ -256,7 +256,9 @@ class Manim:
     @classmethod
     def gen(cls, recitation: str):
         """gen short 3b1b gif in Manim x GPT-4"""
-        completion = OpenAI.chat(Prompts.recitation_to_manim(recitation), max_tokens=1000)
+        prompt = Prompts.recitation_to_manim(recitation)
+        print(prompt)
+        completion = OpenAI.chat(prompt, max_tokens=1000)
         raw_py = completion.split('```python')[-1].split('```py')[-1].split('```')[0].strip()
         # pipe to python file
         print(raw_py)
