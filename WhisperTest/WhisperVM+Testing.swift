@@ -6,8 +6,8 @@
 //  Copyright © 2024 Andrew Zheng. All rights reserved.
 //
 
-import WhisperKit
 import SwiftUI
+import WhisperKit
 
 extension WhisperViewModel {
     func startTestingScript() {
@@ -21,14 +21,16 @@ extension WhisperViewModel {
         Task {
             var previousChunk: String?
 
-            func addPreviousChunk(index: Int) {
+            func addPreviousChunk(currentIndex: Int) {
+                let previousIndex = currentIndex - 1
+
                 if let previousChunk {
                     let segment = TranscriptionSegment(
                         //                        id: index,
                         id: UUID().uuidString,
                         seek: 0,
-                        start: Float(index - 1) * chunkLength,
-                        end: Float(index) * chunkLength,
+                        start: Float(previousIndex) * chunkLength,
+                        end: Float(currentIndex) * chunkLength,
                         text: previousChunk,
                         tokens: [],
                         temperature: 1,
@@ -38,11 +40,11 @@ extension WhisperViewModel {
                     )
 
                     confirmedSegments.append(segment)
-                    
+
                     if testingConfiguration.useSnapshotsForVisualizations {
-                        print("using index: \(index - 1)")
-                        if testingConfiguration.snapshots.indices.contains(index - 1) {
-                            let visualizations = testingConfiguration.snapshots[index - 1].visualizations
+                        print("using index: \(previousIndex)")
+                        if testingConfiguration.snapshots.indices.contains(previousIndex) {
+                            let visualizations = testingConfiguration.snapshots[previousIndex].visualizations
                             displayVisualizations(visualizations: visualizations)
                         } else {
                             print("No visualizations??")
@@ -57,7 +59,7 @@ extension WhisperViewModel {
 
                 await { @MainActor in
                     if previousChunk != nil {
-                        addPreviousChunk(index: index)
+                        addPreviousChunk(currentIndex: index)
                     }
 
                     self.currentText = ""
@@ -83,7 +85,7 @@ extension WhisperViewModel {
             // last one
 
             await { @MainActor in
-                addPreviousChunk(index: chunked.count)
+                addPreviousChunk(currentIndex: chunked.count)
 
                 withAnimation {
                     self.currentText = ""
