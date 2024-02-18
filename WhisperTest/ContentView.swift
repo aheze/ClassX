@@ -1,7 +1,7 @@
 //
 //  ContentView.swift
 //  WhisperTest
-//  
+//
 //  Created by Andrew Zheng (github.com/aheze) on 2/17/24.
 //  Copyright © 2024 Andrew Zheng. All rights reserved.
 //
@@ -30,29 +30,11 @@ struct ContentView: View {
                 }
             }
             
+            Divider()
             
-            VStack {
-                
-                ForEach(whisperViewModel.confirmedSegments, id: \.id) { confirmedSegment in
-                    Text("\(confirmedSegment.text)")
-                }
-                
-                ForEach(whisperViewModel.unconfirmedSegments, id: \.id) { segment in
-                    Text(segment.text)
-                }
-                
-                VStack {
-                    ForEach(whisperViewModel.unconfirmedText, id: \.self) { text in
-                        Text(text)
-                    }
-                }
-                .border(.green)
-                
-                Divider()
-                
-                Text(whisperViewModel.currentText)
-            }
-            
+            TranscriptView(whisperViewModel: whisperViewModel)
+                .frame(maxHeight: 500)
+                .padding()
         }
         .padding()
         .onAppear {

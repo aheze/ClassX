@@ -147,7 +147,7 @@ extension WhisperViewModel {
                         addPreviousChunk(index: index)
                     }
                     
-                    self.currentText = ""
+                    self.currentText = " "
                     let words = chunk.components(separatedBy: .whitespaces)
                     for wordIndex in words.indices {
                         DispatchQueue.main.asyncAfter(deadline: .now() + Double(Float(wordIndex) * wordLength)) {
@@ -163,7 +163,7 @@ extension WhisperViewModel {
             DispatchQueue.main.asyncAfter(deadline: .now() + Double(Float(chunked.count) * chunkLength)) {
                 addPreviousChunk(index: chunked.count)
                 
-                self.currentText = ""
+                self.currentText = " "
             }
         }
     }
@@ -187,7 +187,7 @@ extension WhisperViewModel {
         isRecording = false
         isTranscribing = false
         whisperKit?.audioProcessor.stopRecording()
-        currentText = ""
+        currentText = " "
         unconfirmedText = []
 
         currentLag = 0
@@ -361,7 +361,7 @@ extension WhisperViewModel {
 
         // We need to run this next part on the main thread
         await MainActor.run {
-            currentText = ""
+            currentText = " "
             unconfirmedText = []
             guard let segments = transcription?.segments else {
                 return

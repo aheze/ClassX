@@ -10,6 +10,7 @@
 		3CA775782B80D970009C525C /* WhisperKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA775772B80D970009C525C /* WhisperKit */; };
 		3CA7757A2B80D970009C525C /* transcribe in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA775792B80D970009C525C /* transcribe */; };
 		3CA7757D2B81B736009C525C /* TestingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA7757C2B81B736009C525C /* TestingData.swift */; };
+		3CA7757F2B81BA7B009C525C /* TranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA7757E2B81BA7B009C525C /* TranscriptView.swift */; };
 		3CE0199B2B80C879007BB8ED /* WhisperTestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE0199A2B80C879007BB8ED /* WhisperTestApp.swift */; };
 		3CE0199D2B80C879007BB8ED /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE0199C2B80C879007BB8ED /* ContentView.swift */; };
 		3CE0199F2B80C87A007BB8ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CE0199E2B80C87A007BB8ED /* Assets.xcassets */; };
@@ -22,6 +23,7 @@
 /* Begin PBXFileReference section */
 		3CA7757B2B80D977009C525C /* WhisperKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = WhisperKit; path = ../WhisperKit; sourceTree = "<group>"; };
 		3CA7757C2B81B736009C525C /* TestingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingData.swift; sourceTree = "<group>"; };
+		3CA7757E2B81BA7B009C525C /* TranscriptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptView.swift; sourceTree = "<group>"; };
 		3CE019972B80C879007BB8ED /* WhisperTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CE0199A2B80C879007BB8ED /* WhisperTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperTestApp.swift; sourceTree = "<group>"; };
 		3CE0199C2B80C879007BB8ED /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 				3CE019AD2B80C8F8007BB8ED /* WhisperViewModel.swift */,
 				3CA7757C2B81B736009C525C /* TestingData.swift */,
 				3CE0199C2B80C879007BB8ED /* ContentView.swift */,
+				3CA7757E2B81BA7B009C525C /* TranscriptView.swift */,
 				3CE0199E2B80C87A007BB8ED /* Assets.xcassets */,
 				3CE019A02B80C87A007BB8ED /* Preview Content */,
 			);
@@ -167,6 +170,7 @@
 				3CA7757D2B81B736009C525C /* TestingData.swift in Sources */,
 				3CE0199D2B80C879007BB8ED /* ContentView.swift in Sources */,
 				3CE019AE2B80C8F8007BB8ED /* WhisperViewModel.swift in Sources */,
+				3CA7757F2B81BA7B009C525C /* TranscriptView.swift in Sources */,
 				3CE0199B2B80C879007BB8ED /* WhisperTestApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
