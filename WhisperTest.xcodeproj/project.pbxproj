@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C27F3072B81D8C500F0DA28 /* SwiftMath in Frameworks */ = {isa = PBXBuildFile; productRef = 3C27F3062B81D8C500F0DA28 /* SwiftMath */; };
 		3CA775782B80D970009C525C /* WhisperKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA775772B80D970009C525C /* WhisperKit */; };
 		3CA7757A2B80D970009C525C /* transcribe in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA775792B80D970009C525C /* transcribe */; };
 		3CA7757D2B81B736009C525C /* TestingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA7757C2B81B736009C525C /* TestingData.swift */; };
@@ -39,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C27F3072B81D8C500F0DA28 /* SwiftMath in Frameworks */,
 				3CA775782B80D970009C525C /* WhisperKit in Frameworks */,
 				3CA7757A2B80D970009C525C /* transcribe in Frameworks */,
 				3CE019BC2B80CFF4007BB8ED /* Files in Frameworks */,
@@ -116,6 +118,7 @@
 				3CE019BB2B80CFF4007BB8ED /* Files */,
 				3CA775772B80D970009C525C /* WhisperKit */,
 				3CA775792B80D970009C525C /* transcribe */,
+				3C27F3062B81D8C500F0DA28 /* SwiftMath */,
 			);
 			productName = WhisperTest;
 			productReference = 3CE019972B80C879007BB8ED /* WhisperTest.app */;
@@ -148,6 +151,7 @@
 			packageReferences = (
 				3CE019BA2B80CFF4007BB8ED /* XCRemoteSwiftPackageReference "Files" */,
 				3CA775762B80D970009C525C /* XCRemoteSwiftPackageReference "WhisperKit" */,
+				3C27F3052B81D8C500F0DA28 /* XCRemoteSwiftPackageReference "SwiftMath" */,
 			);
 			productRefGroup = 3CE019982B80C879007BB8ED /* Products */;
 			projectDirPath = "";
@@ -395,6 +399,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3C27F3052B81D8C500F0DA28 /* XCRemoteSwiftPackageReference "SwiftMath" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mgriebling/SwiftMath";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.0;
+			};
+		};
 		3CA775762B80D970009C525C /* XCRemoteSwiftPackageReference "WhisperKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/aheze/WhisperKit";
@@ -414,6 +426,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3C27F3062B81D8C500F0DA28 /* SwiftMath */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3C27F3052B81D8C500F0DA28 /* XCRemoteSwiftPackageReference "SwiftMath" */;
+			productName = SwiftMath;
+		};
 		3CA775772B80D970009C525C /* WhisperKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3CA775762B80D970009C525C /* XCRemoteSwiftPackageReference "WhisperKit" */;
