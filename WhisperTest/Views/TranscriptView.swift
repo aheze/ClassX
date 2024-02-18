@@ -16,9 +16,20 @@ struct TranscriptView: View {
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(whisperViewModel.confirmedSegments, id: \.id) { confirmedSegment in
-                        Text("\(confirmedSegment.text)")
-                            .padding(.vertical, 12)
-                            .padding(.horizontal, 32)
+                        
+                        Button {
+                            if whisperViewModel.currentFocusedSegmentID == confirmedSegment.id {
+                                whisperViewModel.currentFocusedSegmentID = nil
+                            } else {
+                                whisperViewModel.currentFocusedSegmentID = confirmedSegment.id
+                            }
+                        } label: {
+                            Text("\(confirmedSegment.text)")
+                                .foregroundColor(whisperViewModel.currentFocusedSegmentID == confirmedSegment.id ? .green : .white)
+                                .padding(.vertical, 12)
+                                .padding(.horizontal, 32)
+                        }
+                        .buttonStyle(.plain)
                     }
 
                     VStack {

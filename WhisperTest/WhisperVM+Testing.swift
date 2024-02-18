@@ -45,6 +45,7 @@ extension WhisperViewModel {
                         print("using index: \(previousIndex)")
                         if testingConfiguration.snapshots.indices.contains(previousIndex) {
                             let visualizations = testingConfiguration.snapshots[previousIndex].visualizations
+                            serverResponseBySegmentID[segment.id] = ServerResponse(id: segment.id, uploadNumber: 0, visualizations: visualizations)
                             displayVisualizations(visualizations: visualizations)
                         } else {
                             print("No visualizations??")

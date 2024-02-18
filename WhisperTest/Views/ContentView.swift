@@ -144,9 +144,47 @@ struct ContentView: View {
                 .animation(shown ? .linear(duration: 1.5) : .spring, value: shown)
             }
             .animation(.spring, value: step)
+            .overlay(alignment: .bottom) {
+                bottomOverlay
+            }
             .onAppear {
                 whisperViewModel.loadModel()
             }
+    }
+
+    @ViewBuilder var bottomOverlay: some View {
+        VStack {
+            if let currentFocusedSegmentID = whisperViewModel.currentFocusedSegmentID {
+                HStack(spacing: 32) {
+                    Text("History")
+                        .bold()
+                    
+                    if let segment = whisperViewModel.confirmedSegments.first(where: { $0.id == currentFocusedSegmentID }) {
+                        HStack {
+                            Text("\(String(format: "%.2f", segment.start)) - \(String(format: "%.2f", segment.end))")
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+
+                    Button {
+                        whisperViewModel.currentFocusedSegmentID = nil
+                    } label: {
+                        Image(systemName: "xmark")
+                            .padding()
+                    }
+                }
+                .font(.system(size: 38))
+                .padding(.horizontal, 48)
+                .padding(.vertical, 24)
+                .background {
+                    Capsule()
+                        .fill(.green.gradient)
+                        .brightness(-0.2)
+                }
+            }
+        }
+        .animation(.spring, value: whisperViewModel.currentFocusedSegmentID != nil)
+        .frame(width: (preservedBoardDimensions?.width ?? 300) - 60)
     }
 
     var initialView: some View {
@@ -156,6 +194,10 @@ struct ContentView: View {
                 .kerning(10)
 
             Button {
+                whisperViewModel.resetState()
+                whisperViewModel.confirmedSegments = []
+                whisperViewModel.currentText = ""
+                
                 step = .resizingToFitBoard
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
@@ -216,6 +258,8 @@ struct ContentView: View {
                 }
             } else {
                 whisperViewModel.end()
+                
+                whisperViewModel.currentFocusedSegmentID = nil
 
                 withAnimation {
                     circleAnimations = []
@@ -275,6 +319,7 @@ struct ContentView: View {
                         TranscriptView(whisperViewModel: whisperViewModel)
                     }
                 }
+                .clipped()
                 .glassBackgroundEffect()
                 .frame(minWidth: minimumSideWidth)
 
@@ -292,6 +337,7 @@ struct ContentView: View {
                         VisualizationsView(whisperViewModel: whisperViewModel)
                     }
                 }
+                .clipped()
                 .glassBackgroundEffect()
                 .frame(minWidth: minimumSideWidth)
         }
@@ -313,15 +359,16 @@ struct ContentView: View {
                 Image(systemName: "chevron.backward")
                     .font(.system(size: 24, weight: .medium))
             }
-            
+
             Text(shown ? "ClassX" : "Quick Setup")
                 .foregroundStyle(.secondary)
                 .textCase(.uppercase)
                 .font(.system(size: 32, weight: .semibold))
-                .padding(.vertical)
+                .padding(.vertical, 20)
         }
+        .padding(.horizontal, 32)
+        .glassBackgroundEffect(displayMode: shown ? .always : .never)
         .frame(maxWidth: .infinity)
-        .padding(32)
         .opacity(step == .resizingToFitBoard || step == .resizingToAddContent ? 1 : 0)
     }
 

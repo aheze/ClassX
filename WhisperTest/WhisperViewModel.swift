@@ -162,6 +162,7 @@ extension WhisperViewModel {
         isTranscribing = false
         whisperKit?.audioProcessor.stopRecording()
 
+//        confirmedSegments = []
 //        currentText = ""
 //        unconfirmedText = []
 
@@ -171,7 +172,7 @@ extension WhisperViewModel {
         lastConfirmedSegmentEndSeconds = 0
         requiredSegmentsForConfirmation = 2
 
-//        confirmedSegments = []
+//
 //        unconfirmedSegments = []
     }
 
