@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3C27F3072B81D8C500F0DA28 /* SwiftMath in Frameworks */ = {isa = PBXBuildFile; productRef = 3C27F3062B81D8C500F0DA28 /* SwiftMath */; };
+		3C27F3092B81E4FB00F0DA28 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C27F3082B81E4FB00F0DA28 /* Model.swift */; };
 		3CA775782B80D970009C525C /* WhisperKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA775772B80D970009C525C /* WhisperKit */; };
 		3CA7757A2B80D970009C525C /* transcribe in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA775792B80D970009C525C /* transcribe */; };
 		3CA7757D2B81B736009C525C /* TestingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA7757C2B81B736009C525C /* TestingData.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3C27F3082B81E4FB00F0DA28 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		3CA7757C2B81B736009C525C /* TestingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingData.swift; sourceTree = "<group>"; };
 		3CA7757E2B81BA7B009C525C /* TranscriptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptView.swift; sourceTree = "<group>"; };
 		3CA775832B81BDBB009C525C /* LatexVisualization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatexVisualization.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 			children = (
 				3CE019BF2B80D3DB007BB8ED /* openai_whisper-base.en */,
 				3CE0199A2B80C879007BB8ED /* WhisperTestApp.swift */,
+				3C27F3082B81E4FB00F0DA28 /* Model.swift */,
 				3CE019AD2B80C8F8007BB8ED /* WhisperViewModel.swift */,
 				3CA7757C2B81B736009C525C /* TestingData.swift */,
 				3CE0199C2B80C879007BB8ED /* ContentView.swift */,
@@ -180,6 +183,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C27F3092B81E4FB00F0DA28 /* Model.swift in Sources */,
 				3CA7757D2B81B736009C525C /* TestingData.swift in Sources */,
 				3CE0199D2B80C879007BB8ED /* ContentView.swift in Sources */,
 				3CE019AE2B80C8F8007BB8ED /* WhisperViewModel.swift in Sources */,

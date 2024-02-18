@@ -21,13 +21,13 @@ struct TranscriptView: View {
                             .padding(.horizontal, 24)
                     }
                     
-                    ForEach(whisperViewModel.unconfirmedSegments, id: \.id) { segment in
-                        Text(segment.text)
-                            .opacity(0.25)
-                            .padding(.vertical, 12)
-                            .padding(.horizontal, 24)
-                    }
-                    
+//                    ForEach(whisperViewModel.unconfirmedSegments, id: \.id) { segment in
+//                        Text(segment.text)
+//                            .opacity(0.75)
+//                            .padding(.vertical, 12)
+//                            .padding(.horizontal, 24)
+//                    }
+//                    
                     VStack {
                         ForEach(whisperViewModel.unconfirmedText, id: \.self) { text in
                             Text(text)
@@ -39,7 +39,7 @@ struct TranscriptView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 
-                Text(whisperViewModel.currentText.isEmpty ? " " : whisperViewModel.currentText)
+                Text(whisperViewModel.currentText.isEmpty ? " " : whisperViewModel.currentText.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil))
                     .contentTransition(.interpolate)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .opacity(0.5)

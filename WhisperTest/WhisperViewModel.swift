@@ -7,6 +7,7 @@
 //
 
 import AVFoundation
+import Combine
 import Files
 import SwiftUI
 import WhisperKit
@@ -47,10 +48,19 @@ class WhisperViewModel: ObservableObject {
     @Published var lastConfirmedSegmentEndSeconds: Float = 0
     @Published var requiredSegmentsForConfirmation: Int = 2
     @Published var confirmedSegments: [TranscriptionSegment] = []
-    @Published var unconfirmedSegments: [TranscriptionSegment] = []
+//    @Published var unconfirmedSegments: [TranscriptionSegment] = []
     @Published var unconfirmedText: [String] = []
     @Published var transcriptionTask: Task<Void, Never>? = nil
     @Published var currentText: String = ""
+    
+    // MARK: - Server
+    var currentUploadNumber = 0
+    
+    var cancellables = Set<AnyCancellable>()
+
+    init() {
+        listen()
+    }
 }
 
 extension WhisperViewModel {
@@ -180,6 +190,43 @@ extension WhisperViewModel {
     }
 }
 
+extension WhisperViewModel {
+    func listen() {
+//        Publishers.CombineLatest($confirmedSegments, $unconfirmedSegments)
+//            .map {
+//                $0 + $1
+//            }
+        $confirmedSegments
+            .dropFirst()
+            .sink { [weak self] confirmedSegments in
+                guard let self else { return }
+
+                
+                let segments = confirmedSegments.map { $0.text.trimmingCharacters(in: .whitespacesAndNewlines) }
+                let upload = WhisperUpload(uploadNumber: self.currentUploadNumber, segments: segments)
+                
+                let encoder = JSONEncoder()
+                encoder.outputFormatting = .prettyPrinted
+
+                do {
+                    let data = try encoder.encode(upload)
+                    guard let string = String(data: data, encoding: .utf8) else {
+                        print("Couldn't make string from data")
+                        return
+                    }
+                    
+                    self.currentUploadNumber += 1
+                    
+                    print(string)
+                    
+                } catch {
+                    print("Error encoding: \(error)")
+                }
+            }
+            .store(in: &cancellables)
+    }
+}
+
 // MARK: - Transcription
 
 extension WhisperViewModel {
@@ -198,16 +245,18 @@ extension WhisperViewModel {
         isRecording = false
         isTranscribing = false
         whisperKit?.audioProcessor.stopRecording()
-        currentText = ""
-        unconfirmedText = []
+        
+//        currentText = ""
+//        unconfirmedText = []
 
         currentLag = 0
         currentFallbacks = 0
         lastBufferSize = 0
         lastConfirmedSegmentEndSeconds = 0
         requiredSegmentsForConfirmation = 2
-        confirmedSegments = []
-        unconfirmedSegments = []
+        
+//        confirmedSegments = []
+//        unconfirmedSegments = []
     }
 
     func startRecording() {
@@ -377,6 +426,8 @@ extension WhisperViewModel {
             guard let segments = transcription?.segments else {
                 return
             }
+            
+            self.confirmedSegments = segments
 
 //            self.tokensPerSecond = transcription?.timings?.tokensPerSecond ?? 0
 //            self.realTimeFactor = transcription?.timings?.realTimeFactor ?? 0
@@ -385,30 +436,30 @@ extension WhisperViewModel {
 //            self.currentLag = transcription?.timings?.decodingLoop ?? 0
 
             // Logic for moving segments to confirmedSegments
-            if segments.count > requiredSegmentsForConfirmation {
-                // Calculate the number of segments to confirm
-                let numberOfSegmentsToConfirm = segments.count - requiredSegmentsForConfirmation
-
-                // Confirm the required number of segments
-                let confirmedSegmentsArray = Array(segments.prefix(numberOfSegmentsToConfirm))
-                let remainingSegments = Array(segments.suffix(requiredSegmentsForConfirmation))
-
-                // Update lastConfirmedSegmentEnd based on the last confirmed segment
-                if let lastConfirmedSegment = confirmedSegmentsArray.last, lastConfirmedSegment.end > lastConfirmedSegmentEndSeconds {
-                    lastConfirmedSegmentEndSeconds = lastConfirmedSegment.end
-
-                    // Add confirmed segments to the confirmedSegments array
-                    if !self.confirmedSegments.contains(confirmedSegmentsArray) {
-                        self.confirmedSegments.append(contentsOf: confirmedSegmentsArray)
-                    }
-                }
-
-                // Update transcriptions to reflect the remaining segments
-                self.unconfirmedSegments = remainingSegments
-            } else {
-                // Handle the case where segments are fewer or equal to required
-                self.unconfirmedSegments = segments
-            }
+//            if segments.count > requiredSegmentsForConfirmation {
+//                // Calculate the number of segments to confirm
+//                let numberOfSegmentsToConfirm = segments.count - requiredSegmentsForConfirmation
+//
+//                // Confirm the required number of segments
+//                let confirmedSegmentsArray = Array(segments.prefix(numberOfSegmentsToConfirm))
+//                let remainingSegments = Array(segments.suffix(requiredSegmentsForConfirmation))
+//
+//                // Update lastConfirmedSegmentEnd based on the last confirmed segment
+//                if let lastConfirmedSegment = confirmedSegmentsArray.last, lastConfirmedSegment.end > lastConfirmedSegmentEndSeconds {
+//                    lastConfirmedSegmentEndSeconds = lastConfirmedSegment.end
+//
+//                    // Add confirmed segments to the confirmedSegments array
+//                    if !self.confirmedSegments.contains(confirmedSegmentsArray) {
+//                        self.confirmedSegments.append(contentsOf: confirmedSegmentsArray)
+//                    }
+//                }
+//
+//                // Update transcriptions to reflect the remaining segments
+//                self.unconfirmedSegments = remainingSegments
+//            } else {
+//                // Handle the case where segments are fewer or equal to required
+//                self.unconfirmedSegments = segments
+//            }
         }
     }
 
