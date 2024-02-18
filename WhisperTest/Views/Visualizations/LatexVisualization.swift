@@ -32,6 +32,7 @@ struct MathView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> MTMathUILabel {
         let view = MTMathUILabel()
+        view.textColor = .white
         return view
     }
     

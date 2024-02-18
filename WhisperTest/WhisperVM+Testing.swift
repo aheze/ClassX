@@ -85,10 +85,16 @@ extension WhisperViewModel {
             // last one
 
             await { @MainActor in
-                addPreviousChunk(currentIndex: chunked.count)
-
                 withAnimation {
                     self.currentText = ""
+                }
+            }()
+
+            try await Task.sleep(for: .seconds(0.5))
+
+            await { @MainActor in
+                withAnimation {
+                    addPreviousChunk(currentIndex: chunked.count)
                 }
             }()
         }
