@@ -3,3 +3,4 @@ content
 __pycache__
 *.pyc
 media
+gen_manim.py
