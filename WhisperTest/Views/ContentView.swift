@@ -27,8 +27,23 @@ struct ContentView: View {
 
     @State var currentBoardSize = CGSize.zero
     @State var preservedBoardDimensions: CGSize?
+    @State var circleAnimations = [UUID]()
+
+    let minimumSideWidth = CGFloat(500)
 
     var body: some View {
+        let shown: Bool = {
+            if let preservedBoardDimensions {
+                let shownRaw = step == .resizingToAddContent || step == .finished
+                let enoughWidth = currentBoardSize.width > preservedBoardDimensions.width + minimumSideWidth * 2
+                let enoughHeight = currentBoardSize.height > preservedBoardDimensions.height - 20 // a bit of extra padding
+                let shown = shownRaw && enoughWidth && enoughHeight
+                return shown
+            }
+
+            return false
+        }()
+
         Color.clear
             .sizeReader { size in
                 currentBoardSize = size
@@ -66,11 +81,11 @@ struct ContentView: View {
                         maxWidth: maxWidth,
                         maxHeight: maxHeight
                     )
-//                    .padding(.horizontal, horizontalPadding)
-//                    .opacity(step == .resizingToAddContent ? 0 : 1)
+                    .opacity(shown ? 0 : 1)
+                    .animation(shown ? .linear(duration: 1.5) : .spring, value: shown)
             }
-            .background {
-                backgroundSkeletonView
+            .overlay {
+                mainView(shown: shown)
             }
             .overlay {
                 RoundedRectangle(cornerRadius: 36)
@@ -87,10 +102,10 @@ struct ContentView: View {
                     .opacity(step == .resizingToFitBoard ? 1 : 0)
             }
             .overlay(alignment: .top) {
-                topView
+                topView(shown: shown)
             }
             .overlay(alignment: .bottomTrailing) {
-                bottomRightArrow
+                bottomRightArrow(shown: shown)
             }
             .overlay {
                 ZStack {
@@ -101,6 +116,8 @@ struct ContentView: View {
                         .opacity(step == .resizingToFitBoard || step == .resizingToAddContent ? 1 : 0)
                 }
                 .padding(step == .initial ? 90 : 32)
+                .opacity(shown ? 0 : 1)
+                .animation(shown ? .linear(duration: 1.5) : .spring, value: shown)
             }
             .animation(.spring, value: step)
 
@@ -147,11 +164,55 @@ struct ContentView: View {
         }
     }
 
-    var backgroundSkeletonView: some View {
+    func mainView(shown: Bool) -> some View {
+        ZStack {
+            if let preservedBoardDimensions {
+                backgroundSkeletonView(preservedBoardDimensions: preservedBoardDimensions, shown: shown)
+                    .opacity(shown ? 0 : 1)
+
+                augmentedView(preservedBoardDimensions: preservedBoardDimensions, shown: shown)
+                    .opacity(shown ? 1 : 0)
+            }
+        }
+        .animation(.spring, value: shown)
+        .overlay {
+            ZStack {
+                ForEach(circleAnimations, id: \.self) { _ in
+                    Circle()
+                        .fill(.green)
+                        .blur(radius: 60)
+                        .opacity(0.4)
+                        .padding(100)
+                        .transition(.asymmetric(insertion: .scale(scale: 0.1), removal: .scale(scale: 1.2)).combined(with: .opacity))
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .onChange(of: shown) { newValue in
+
+            if newValue {
+                withAnimation {
+                    circleAnimations.append(UUID())
+                }
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    withAnimation {
+                        circleAnimations = []
+                    }
+                }
+            } else {
+                withAnimation {
+                    circleAnimations = []
+                }
+            }
+        }
+    }
+
+    func backgroundSkeletonView(preservedBoardDimensions: CGSize, shown: Bool) -> some View {
         Color.clear
             .overlay {
                 Color.clear
-                    .frame(width: preservedBoardDimensions?.width, height: preservedBoardDimensions?.height)
+                    .frame(width: preservedBoardDimensions.width, height: preservedBoardDimensions.height)
                     .overlay(align: .leading, to: .trailing) {
                         RoundedRectangle(cornerRadius: 36)
                             .fill(.white)
@@ -160,8 +221,8 @@ struct ContentView: View {
                                 RoundedRectangle(cornerRadius: 36)
                                     .strokeBorder(Color.blue, lineWidth: 16)
                             }
-                            .frame(width: 500)
-                            .offset(x: 80)
+                            .frame(width: minimumSideWidth)
+                            .offset(x: shown ? 0 : 80)
                     }
                     .overlay(align: .trailing, to: .leading) {
                         RoundedRectangle(cornerRadius: 36)
@@ -171,28 +232,43 @@ struct ContentView: View {
                                 RoundedRectangle(cornerRadius: 36)
                                     .strokeBorder(Color.blue, lineWidth: 16)
                             }
-                            .frame(width: 500)
-                            .offset(x: -80)
+                            .frame(width: minimumSideWidth)
+                            .offset(x: shown ? 0 : -80)
                     }
             }
             .mask {
                 HStack(spacing: 0) {
                     LinearGradient(colors: [.clear, .white], startPoint: .leading, endPoint: .trailing)
                     Color.white
-                        .frame(width: preservedBoardDimensions?.width)
+                        .frame(width: preservedBoardDimensions.width)
                     LinearGradient(colors: [.white, .clear], startPoint: .leading, endPoint: .trailing)
                 }
             }
             .opacity(step == .resizingToAddContent ? 1 : 0)
     }
 
-    var topView: some View {
+    func augmentedView(preservedBoardDimensions: CGSize, shown: Bool) -> some View {
+        HStack {
+            Color.clear
+                .glassBackgroundEffect()
+
+            Color.clear
+                .frame(width: preservedBoardDimensions.width)
+
+            Color.clear
+                .glassBackgroundEffect()
+        }
+        .frame(height: preservedBoardDimensions.height)
+    }
+
+    func topView(shown: Bool) -> some View {
         Text("Quick Setup")
             .foregroundStyle(.secondary)
             .textCase(.uppercase)
             .font(.system(size: 32, weight: .semibold))
             .frame(maxWidth: .infinity)
             .padding(.vertical)
+            .opacity(shown ? 0 : 1)
             .overlay(alignment: .leading) {
                 Button {
                     withAnimation {
@@ -208,7 +284,6 @@ struct ContentView: View {
                     Image(systemName: "chevron.backward")
                         .font(.system(size: 24, weight: .medium))
                 }
-                .buttonStyle(.borderless)
             }
             .padding(32)
             .opacity(step == .resizingToFitBoard || step == .resizingToAddContent ? 1 : 0)
@@ -250,26 +325,10 @@ struct ContentView: View {
                 }
                 .buttonStyle(.plain)
             }
-
-//            if showingAddContentNext, step == .resizingToAddContent {
-//                Button {
-//                    step = .finished
-//                } label: {
-//                    Text("Next")
-//                        .font(.system(size: 48, weight: .medium))
-//                        .padding(.horizontal, 38)
-//                        .padding(.vertical, 24)
-//                        .background(
-//                            Capsule()
-//                                .fill(.blue.opacity(0.5))
-//                        )
-//                }
-//                .buttonStyle(.plain)
-//            }
         }
     }
 
-    var bottomRightArrow: some View {
+    func bottomRightArrow(shown: Bool) -> some View {
         ZStack(alignment: .bottomTrailing) {
             Image("BottomRightArrow")
                 .resizable()
@@ -284,13 +343,21 @@ struct ContentView: View {
                 .font(.system(size: 64))
                 .frame(width: 120, height: 120)
                 .background {
-                    Color.blue
-                        .opacity(0.3)
-                        .brightness(0.5)
+                    ZStack {
+                        if shown {
+                            Color.green
+                        } else {
+                            Color.blue
+                        }
+                    }
+                    .opacity(0.3)
+                    .brightness(shown ? 0 : 0.5)
                 }
                 .glassBackgroundEffect(in: Circle())
                 .offset(x: step == .resizingToAddContent ? 0 : -500)
                 .opacity(step == .resizingToAddContent ? 1 : 0)
+                .opacity(shown ? 0 : 1)
+                .animation(shown ? .linear(duration: 1.5) : .spring, value: shown)
         }
     }
 }
