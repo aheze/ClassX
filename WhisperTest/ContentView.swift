@@ -32,6 +32,12 @@ struct ContentView: View {
             
             Divider()
             
+            ScrollView {
+                LatexVisualization()
+            }
+            
+            Divider()
+            
             TranscriptView(whisperViewModel: whisperViewModel)
                 .frame(maxHeight: 500)
                 .padding()
