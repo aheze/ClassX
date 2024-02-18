@@ -260,13 +260,14 @@ class Manim:
         raw_py = completion.split('```python')[-1].split('```py')[-1].split('```')[0].strip()
         # pipe to python file
         print(raw_py)
+        now = int(time.time())
         
         with open('gen_manim.py', 'w') as f:
             f.write(raw_py)
         # run python file
-        os.system('manim -p -ql gen_manim.py GeneratedGIF -o manim.mp4')
+        os.system(f'manim -p -ql gen_manim.py GeneratedGIF -o manim-{now}.mp4')
         
         # url is cwd/media/videos/manim/480p15/manim.mp4
-        slug = '/media/videos/gen_manim/480p15/manim.mp4'
+        slug = f'/media/videos/gen_manim/480p15/manim-{now}.mp4'
         print(os.getcwd() + slug)
         return slug

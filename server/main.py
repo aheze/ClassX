@@ -72,4 +72,4 @@ async def ping():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=3000)
+    uvicorn.run("main:app", host="0.0.0.0", port=3000, reload=True)
