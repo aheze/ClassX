@@ -69,9 +69,9 @@ extension WhisperViewModel {
 
                 for wordIndex in words.indices {
                     await { @MainActor in
-                        withAnimation {
-                            self.currentText += "\(words[wordIndex]) "
-                        }
+
+                        self.currentText += "\(words[wordIndex]) "
+
                     }()
 
                     try await Task.sleep(for: .seconds(Double(wordLength)))
@@ -85,17 +85,8 @@ extension WhisperViewModel {
             // last one
 
             await { @MainActor in
-                withAnimation {
-                    self.currentText = ""
-                }
-            }()
-
-            try await Task.sleep(for: .seconds(0.5))
-
-            await { @MainActor in
-                withAnimation {
-                    addPreviousChunk(currentIndex: chunked.count)
-                }
+                self.currentText = ""
+                addPreviousChunk(currentIndex: chunked.count)
             }()
         }
     }

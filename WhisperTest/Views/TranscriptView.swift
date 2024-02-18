@@ -32,14 +32,19 @@ struct TranscriptView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text(whisperViewModel.currentText.isEmpty ? " " : whisperViewModel.currentText.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil))
+                let currentText = whisperViewModel.currentText.trimmingCharacters(in: .whitespacesAndNewlines)
+
+                Text(currentText.isEmpty ? " " : currentText.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil))
                     .contentTransition(.interpolate)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .opacity(0.5)
                     .frame(minHeight: 100, alignment: .top)
                     .padding(.vertical, 12)
                     .padding(.horizontal, 32)
+                    .frame(height: currentText.isEmpty ? 0 : nil, alignment: .top)
             }
+            .animation(.spring(response: 0.2, dampingFraction: 1, blendDuration: 1), value: whisperViewModel.currentText)
+            .animation(.spring, value: whisperViewModel.confirmedSegments.count)
             .font(.system(size: 42))
             .fontWeight(.bold)
             .padding(.vertical, 24)
