@@ -21,11 +21,10 @@ enum LoadingState {
 class WhisperViewModel: ObservableObject {
     var whisperKit: WhisperKit?
     var selectedModel = "base.en"
-    
 
     // MARK: - Loading
 
-    @Published var specializationProgress = Float(0)
+//    @Published var specializationProgress = Float(0)
     @Published var loadingState = LoadingState.invalid
 
     // MARK: - Transcription
@@ -78,7 +77,7 @@ extension WhisperViewModel {
 
         whisperKit = nil
 
-        Task {
+        Task.detached {
             let whisperKit = try await WhisperKit(
                 verbose: true,
                 logLevel: .debug,
@@ -105,14 +104,14 @@ extension WhisperViewModel {
                 }
 
                 await { @MainActor in
-                    loadingState = .loading
+                    self.loadingState = .loading
                 }()
 
                 try await whisperKit.loadModels()
 
                 await { @MainActor in
-                    specializationProgress = 1.0
-                    loadingState = .done
+//                    specializationProgress = 1.0
+                    self.loadingState = .done
                 }()
 
                 print("Finished!")
@@ -120,7 +119,7 @@ extension WhisperViewModel {
                 print("Couldn't get folder: \(error)")
 
                 await MainActor.run {
-                    loadingState = .invalid
+                    self.loadingState = .invalid
                 }
             }
         }
@@ -140,7 +139,7 @@ extension WhisperViewModel {
             end()
         }
     }
-    
+
     func start() {
         if let testingConfiguration {
             startTestingScript()
@@ -148,11 +147,10 @@ extension WhisperViewModel {
             startRecording()
         }
     }
-    
+
     func end() {
         resetState()
         if let testingConfiguration {
-            
         } else {
             stopRecording()
         }
@@ -190,9 +188,12 @@ extension WhisperViewModel {
             }
 
             // Delay the timer start by 1 second
-            isRecording = true
-            isTranscribing = true
-            realtimeLoop()
+            
+            await { @MainActor in
+                isRecording = true
+                isTranscribing = true
+                realtimeLoop()
+            }()
         }
     }
 

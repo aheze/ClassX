@@ -48,8 +48,7 @@ struct ContentView: View {
 
         Color.clear
             .sizeReader { size in
-                print("size: \(size)")
-                
+
                 currentBoardSize = size
                 if allowShowNext {
                     if step == .resizingToFitBoard {
@@ -71,9 +70,9 @@ struct ContentView: View {
                 let (maxWidth, maxHeight): (CGFloat, CGFloat) = {
                     switch step {
                     case .initial:
-                        return (600, 400)
+                        return (400, 300)
                     case .resizingToAddContent:
-                        return (680, 160)
+                        return (420, 120)
                     default:
                         return (.infinity, .infinity)
                     }
@@ -115,7 +114,7 @@ struct ContentView: View {
             }
             .overlay {
                 RoundedRectangle(cornerRadius: 36)
-                    .strokeBorder(Color.blue, lineWidth: 16)
+                    .strokeBorder(Color.blue, lineWidth: 10)
                     .reverseMask {
                         ZStack {
                             Rectangle()
@@ -160,7 +159,7 @@ struct ContentView: View {
                 HStack(spacing: 32) {
                     Text("History")
                         .bold()
-                    
+
                     if let segment = whisperViewModel.confirmedSegments.first(where: { $0.id == currentFocusedSegmentID }) {
                         HStack {
                             Text("\(String(format: "%.2f", segment.start)) - \(String(format: "%.2f", segment.end))")
@@ -199,7 +198,7 @@ struct ContentView: View {
                 whisperViewModel.resetState()
                 whisperViewModel.confirmedSegments = []
                 whisperViewModel.currentText = ""
-                
+
                 step = .resizingToFitBoard
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
@@ -226,8 +225,10 @@ struct ContentView: View {
                 backgroundSkeletonView(preservedBoardDimensions: preservedBoardDimensions, shown: shown)
                     .opacity(shown ? 0 : 1)
 
-                augmentedView(preservedBoardDimensions: preservedBoardDimensions, shown: shown)
-                    .opacity(shown ? 1 : 0)
+                Color.clear.overlay {
+                    augmentedView(preservedBoardDimensions: preservedBoardDimensions, shown: shown)
+                }
+                .opacity(shown ? 1 : 0)
             }
         }
         .animation(.spring, value: shown)
@@ -260,7 +261,7 @@ struct ContentView: View {
                 }
             } else {
                 whisperViewModel.end()
-                
+
                 whisperViewModel.currentFocusedSegmentID = nil
 
                 withAnimation {
@@ -281,7 +282,7 @@ struct ContentView: View {
                             .opacity(0.2)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 36)
-                                    .strokeBorder(Color.blue, lineWidth: 16)
+                                    .strokeBorder(Color.blue, lineWidth: 10)
                             }
                             .frame(width: minimumSideWidth)
                             .offset(x: shown ? 0 : 80)
@@ -292,7 +293,7 @@ struct ContentView: View {
                             .opacity(0.2)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 36)
-                                    .strokeBorder(Color.blue, lineWidth: 16)
+                                    .strokeBorder(Color.blue, lineWidth: 10)
                             }
                             .frame(width: minimumSideWidth)
                             .offset(x: shown ? 0 : -80)
@@ -348,8 +349,6 @@ struct ContentView: View {
     func topView(shown: Bool) -> some View {
         HStack(spacing: 24) {
             Button {
-                print("go back!")
-                
                 withAnimation {
                     preservedBoardDimensions = nil
 
@@ -367,7 +366,7 @@ struct ContentView: View {
             Text(shown ? "ClassX" : "Quick Setup")
                 .foregroundStyle(.secondary)
                 .textCase(.uppercase)
-                .font(.system(size: 24, weight: .semibold))
+                .font(.system(size: 21, weight: .semibold))
                 .padding(.vertical, 20)
         }
         .padding(.horizontal, 32)
@@ -380,15 +379,15 @@ struct ContentView: View {
         VStack(spacing: 48) {
             HStack(spacing: 20) {
                 Image(systemName: step == .resizingToAddContent ? "2.circle.fill" : "1.circle.fill")
-                    .font(.system(size: 48, weight: .medium))
+                    .font(.system(size: 42, weight: .medium))
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(step == .resizingToAddContent ? "Augment the board!" : "Resize to fit the board!")
-                        .font(.system(size: 36, weight: .medium))
+                        .font(.system(size: 24, weight: .medium))
 
                     Text("Drag the bottom-right corner")
                         .foregroundStyle(.secondary)
-                        .font(.system(size: 24, weight: .medium))
+                        .font(.system(size: 17, weight: .medium))
                 }
             }
             .offset(x: -20)
@@ -402,9 +401,9 @@ struct ContentView: View {
                     preservedBoardDimensions = currentBoardSize
                 } label: {
                     Text("Next")
-                        .font(.system(size: 24, weight: .medium))
-                        .padding(.horizontal, 38)
-                        .padding(.vertical, 24)
+                        .font(.system(size: 21, weight: .medium))
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 18)
                         .background(
                             Capsule()
                                 .fill(.blue.opacity(0.5))
@@ -427,8 +426,8 @@ struct ContentView: View {
                 .opacity(step == .resizingToFitBoard ? 1 : 0)
 
             Image(systemName: "arrow.right")
-                .font(.system(size: 64))
-                .frame(width: 120, height: 120)
+                .font(.system(size: 48))
+                .frame(width: 80, height: 80)
                 .background {
                     ZStack {
                         if shown {
@@ -441,65 +440,10 @@ struct ContentView: View {
                     .brightness(shown ? 0 : 0.5)
                 }
                 .glassBackgroundEffect(in: Circle())
-                .offset(x: step == .resizingToAddContent ? 0 : -500)
+                .offset(x: step == .resizingToAddContent ? 0 : -300)
                 .opacity(step == .resizingToAddContent ? 1 : 0)
                 .opacity(shown ? 0 : 1)
                 .animation(shown ? .linear(duration: 1.5) : .spring, value: shown)
         }
     }
-}
-
-// struct ContentView: View {
-//    @StateObject var whisperViewModel = WhisperViewModel()
-//
-//    var body: some View {
-//        VStack {
-//            Image(systemName: "globe")
-//                .imageScale(.large)
-//                .foregroundStyle(.tint)
-//
-//            Text("Hello, world!")
-//
-//            switch whisperViewModel.loadingState {
-//            case .invalid:
-//                Text("About to load")
-//            case .loading:
-//                ProgressView()
-//            case .done:
-//                Button(whisperViewModel.isRecording ? "Stop" : "Record") {
-//                    whisperViewModel.toggle()
-//                }
-//            }
-//
-//            Divider()
-//
-//            ScrollView {
-//                LatexVisualization()
-//            }
-//
-//            Divider()
-//
-//
-//            HStack {
-//                TranscriptView(whisperViewModel: whisperViewModel)
-//                    .frame(maxHeight: 500)
-//                    .padding()
-//
-//                VisualizationsView(whisperViewModel: whisperViewModel)
-//            }
-//
-//            Button("Start") {
-//                whisperViewModel.startTestingScript()
-//            }
-//
-//        }
-//        .padding()
-//        .onAppear {
-//            whisperViewModel.loadModel()
-//        }
-//    }
-// }
-
-#Preview {
-    ContentView()
 }
