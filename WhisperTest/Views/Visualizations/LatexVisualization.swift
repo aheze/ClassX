@@ -10,18 +10,24 @@ import SwiftMath
 import SwiftUI
 
 struct LatexVisualization: View {
+    var string: String
+    
     var body: some View {
-        let parts = LatexModel.getParts(inputText: TestingData.latex)
+        let parts = LatexModel.getParts(inputText: string)
         
-        VStack(alignment: .leading, spacing: 24) {
-            ForEach(parts) { part in
-                switch part.content {
-                case .latex(let text):
-                    MathView(equation: text, fontSize: 17)
-                case .normal(let text):
-                    Text(.init(text))
+        ScrollView {
+            VStack(alignment: .leading, spacing: 24) {
+                ForEach(parts) { part in
+                    switch part.content {
+                    case .latex(let text):
+                        MathView(equation: text, fontSize: 38)
+                    case .normal(let text):
+                        Text(.init(text))
+                    }
                 }
             }
+            .padding(.horizontal, 32)
+            .padding(.vertical, 24)
         }
     }
 }

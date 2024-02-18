@@ -30,7 +30,7 @@ struct ContentView: View {
     @State var circleAnimations = [UUID]()
 
     @State var animatingBlur = false
-    
+
     let minimumSideWidth = CGFloat(500)
 
     var body: some View {
@@ -84,7 +84,7 @@ struct ContentView: View {
                                 .fill(Color.blue.gradient)
                                 .blur(radius: 300)
                                 .offset(x: animatingBlur ? 200 : -200)
-                            
+
                             Circle()
                                 .fill(Color.purple.gradient)
                                 .blur(radius: 400)
@@ -280,6 +280,7 @@ struct ContentView: View {
 
             Color.clear
                 .frame(width: preservedBoardDimensions.width)
+                .frame(height: preservedBoardDimensions.height)
 
             Color.clear
                 .overlay {
@@ -294,35 +295,34 @@ struct ContentView: View {
                 .glassBackgroundEffect()
                 .frame(minWidth: minimumSideWidth)
         }
-        .frame(height: preservedBoardDimensions.height)
     }
 
     func topView(shown: Bool) -> some View {
-        Text("Quick Setup")
-            .foregroundStyle(.secondary)
-            .textCase(.uppercase)
-            .font(.system(size: 32, weight: .semibold))
-            .frame(maxWidth: .infinity)
-            .padding(.vertical)
-            .opacity(shown ? 0 : 1)
-            .overlay(alignment: .leading) {
-                Button {
-                    withAnimation {
-                        preservedBoardDimensions = nil
+        HStack(spacing: 24) {
+            Button {
+                withAnimation {
+                    preservedBoardDimensions = nil
 
-                        if step == .resizingToAddContent {
-                            step = .resizingToFitBoard
-                        } else {
-                            step = .initial
-                        }
+                    if step == .resizingToAddContent {
+                        step = .resizingToFitBoard
+                    } else {
+                        step = .initial
                     }
-                } label: {
-                    Image(systemName: "chevron.backward")
-                        .font(.system(size: 24, weight: .medium))
                 }
+            } label: {
+                Image(systemName: "chevron.backward")
+                    .font(.system(size: 24, weight: .medium))
             }
-            .padding(32)
-            .opacity(step == .resizingToFitBoard || step == .resizingToAddContent ? 1 : 0)
+            
+            Text(shown ? "ClassX" : "Quick Setup")
+                .foregroundStyle(.secondary)
+                .textCase(.uppercase)
+                .font(.system(size: 32, weight: .semibold))
+                .padding(.vertical)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(32)
+        .opacity(step == .resizingToFitBoard || step == .resizingToAddContent ? 1 : 0)
     }
 
     var stepView: some View {
