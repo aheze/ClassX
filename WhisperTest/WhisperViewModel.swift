@@ -112,59 +112,70 @@ extension WhisperViewModel {
     func startTestingScript() {
         let chunkLength = Float(2.0)
         let wordLength = Float(0.19)
-        
-        
-        var previousChunk: String?
-        
-        
-        
-        func addPreviousChunk(index: Int) {
-            if let previousChunk {
-                let segment = TranscriptionSegment(
-                    id: index,
-                    seek: 0,
-                    start: Float(index - 1) * chunkLength,
-                    end: Float(index) * chunkLength,
-                    text: previousChunk,
-                    tokens: [],
-                    temperature: 1,
-                    avgLogprob: 1,
-                    compressionRatio: 1,
-                    noSpeechProb: 1
-                )
-                
-                self.confirmedSegments.append(segment)
-            }
-        }
-        
-        if let testingText {
-            let chunked = testingText.components(separatedBy: .newlines)
-            for index in chunked.indices {
-                let chunk = chunked[index]
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + Double(Float(index) * chunkLength)) {
-                    if previousChunk != nil {
-                        addPreviousChunk(index: index)
-                    }
-                    
-                    self.currentText = " "
-                    let words = chunk.components(separatedBy: .whitespaces)
-                    for wordIndex in words.indices {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + Double(Float(wordIndex) * wordLength)) {
-                            self.currentText += " \(words[wordIndex])"
-                        }
-                    }
+        guard let testingText else { return }
 
-                    previousChunk = chunk
+        let chunked = testingText.components(separatedBy: .newlines)
+
+        Task {
+            var previousChunk: String?
+
+            func addPreviousChunk(index: Int) {
+                if let previousChunk {
+                    let segment = TranscriptionSegment(
+                        id: index,
+                        seek: 0,
+                        start: Float(index - 1) * chunkLength,
+                        end: Float(index) * chunkLength,
+                        text: previousChunk,
+                        tokens: [],
+                        temperature: 1,
+                        avgLogprob: 1,
+                        compressionRatio: 1,
+                        noSpeechProb: 1
+                    )
+
+                    confirmedSegments.append(segment)
                 }
             }
 
-            // last one
-            DispatchQueue.main.asyncAfter(deadline: .now() + Double(Float(chunked.count) * chunkLength)) {
-                addPreviousChunk(index: chunked.count)
-                
-                self.currentText = " "
+            for index in chunked.indices {
+                let chunk = chunked[index]
+
+                await { @MainActor in
+                    if previousChunk != nil {
+                        addPreviousChunk(index: index)
+                    }
+
+                    self.currentText = ""
+                }()
+
+                let words = chunk.components(separatedBy: .whitespaces)
+
+                for wordIndex in words.indices {
+                    await { @MainActor in
+                        withAnimation {
+                            self.currentText += "\(words[wordIndex]) "
+                        }
+                    }()
+
+                    try await Task.sleep(for: .seconds(Double(wordLength)))
+                }
+
+                previousChunk = chunk
+
+                try await Task.sleep(for: .seconds(0.3))
             }
+
+            // last one
+
+            await { @MainActor in
+                addPreviousChunk(index: chunked.count)
+
+                withAnimation {
+                    self.currentText = ""
+                }
+            }()
         }
     }
 }
@@ -187,7 +198,7 @@ extension WhisperViewModel {
         isRecording = false
         isTranscribing = false
         whisperKit?.audioProcessor.stopRecording()
-        currentText = " "
+        currentText = ""
         unconfirmedText = []
 
         currentLag = 0
@@ -361,7 +372,7 @@ extension WhisperViewModel {
 
         // We need to run this next part on the main thread
         await MainActor.run {
-            currentText = " "
+            currentText = ""
             unconfirmedText = []
             guard let segments = transcription?.segments else {
                 return

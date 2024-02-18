@@ -13,7 +13,7 @@ struct LatexVisualization: View {
     var body: some View {
         let parts = LatexModel.getParts(inputText: TestingData.latex)
         
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 24) {
             ForEach(parts) { part in
                 switch part.content {
                 case .latex(let text):
@@ -55,8 +55,8 @@ enum LatexModel {
         }
     }
 
-    // Regular expression to find LaTeX parts
-    static let latexPattern = "(\\$.*?\\$)|\\\\begin\\{.*?\\}(.*?)\\\\end\\{.*?\\}"
+    // Regular expression to find LaTeX parts surrounded by double dollar signs
+    static let latexPattern = "\\$\\$(.*?)\\$\\$"
     static let regex = try! NSRegularExpression(pattern: latexPattern, options: [.dotMatchesLineSeparators])
 
     static func getParts(inputText: String) -> [Part] {
@@ -72,12 +72,12 @@ enum LatexModel {
             // Extract non-LaTeX part
             let nonLatexRange = Range(uncheckedBounds: (lower: lastEndIndex, upper: Range(match.range, in: inputText)!.lowerBound))
             if !inputText[nonLatexRange].isEmpty {
-                parts.append(.init(content: .normal(String(inputText[nonLatexRange]))))
+                parts.append(Part(content: .normal(String(inputText[nonLatexRange].trimmingCharacters(in: .whitespacesAndNewlines)))))
             }
             
-            // Extract LaTeX part
+            // Extract LaTeX part, including the double dollar signs
             if let range = Range(match.range, in: inputText) {
-                parts.append(.init(content: .latex(String(inputText[range]))))
+                parts.append(Part(content: .latex(String(inputText[range]))))
             }
             
             // Update last end index
@@ -86,7 +86,7 @@ enum LatexModel {
         
         // Add remaining non-LaTeX part if any
         if lastEndIndex < inputText.endIndex {
-            parts.append(.init(content: .normal(String(inputText[lastEndIndex...]))))
+            parts.append(Part(content: .normal(String(inputText[lastEndIndex...].trimmingCharacters(in: .whitespacesAndNewlines)))))
         }
         
         return parts

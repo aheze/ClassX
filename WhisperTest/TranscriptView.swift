@@ -37,22 +37,19 @@ struct TranscriptView: View {
                         }
                     }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 
-                VStack {
-                    Text(whisperViewModel.currentText)
-                        .contentTransition(.interpolate)
-                        .opacity(0.5)
-                        .padding(.vertical, 12)
-                        .padding(.horizontal, 24)
-                }
-                .geometryGroup()
+                Text(whisperViewModel.currentText.isEmpty ? " " : whisperViewModel.currentText)
+                    .contentTransition(.interpolate)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .opacity(0.5)
+                    .frame(minHeight: 100, alignment: .top)
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 24)
             }
             .font(.title3)
             .fontWeight(.bold)
-            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 24)
-            .animation(.spring(response: 0.5, dampingFraction: 1, blendDuration: 1), value: whisperViewModel.confirmedSegments.count)
-            .animation(.spring(response: 0.5, dampingFraction: 1, blendDuration: 1), value: whisperViewModel.currentText)
         }
         .background {
             RoundedRectangle(cornerRadius: 36)

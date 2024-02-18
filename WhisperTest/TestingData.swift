@@ -30,32 +30,50 @@ extension TestingData {
 //    """#
 
     static let latex = #"""
-    Level 1:
-    Imagine you **have** a system where a population can move between different states. For example, a group of people can be in one of two rooms. Each person can stay in the same room or move to the other room. The probabilities of these movements can be described by a matrix, where each entry represents the probability of moving from one state to another. This type of matrix is called a Markov matrix.
-    A Markov matrix has non-negative entries, and the columns sum to 1. This represents the fact that the probabilities of moving to different states from a given state must add up to 1.
-    Level 2:
-    Now, let's dive a little deeper into Markov matrices. If we raise a Markov matrix to a power, we get another Markov matrix. This is because the entries in the matrix represent probabilities, and the product of two matrices represents the combination of two sets of probabilities.
-    For example, consider a system with two states, A and B. The Markov matrix for this system might look like this:
-    \begin{bmatrix}
-    0.5 & 0.5 \\
-    0.3 & 0.7
+    **Level 1: Introduction to Markov Matrices (Markdown)**
+
+    Markov matrices are a special type of matrix that have non-negative entries (entries that are greater than or equal to zero) and columns that sum to 1. These matrices are used to describe systems where population moves between states with probabilities as matrix entries.
+
+    For example, consider a simple system where a population of 100 individuals can be in one of two states: A or B. The probability of moving from state A to state B is 0.4, and the probability of moving from state B to state A is 0.6. We can represent this system with a Markov matrix:
+
+    $$
+    P = \begin{bmatrix}
+    0.6 & 0.4 \\
+    0.6 & 0.4
     \end{bmatrix}
-    If we raise this matrix to the second power, we get:
-    \begin{bmatrix}
-    0.4 & 0.6 \\
-    0.42 & 0.58
+    $$
+
+    **Level 2: Eigenvalues and Powers of Markov Matrices (LaTeX)**
+
+    One important property of Markov matrices is that 1 is an eigenvalue, and all other eigenvalues are less than 1 in absolute value. This means that when we raise a Markov matrix to a power, the entries of the resulting matrix will converge to the eigenvector corresponding to the eigenvalue of 1.
+
+    For example, consider the Markov matrix P from the previous example. The eigenvalues of P are 1 and 0. The eigenvector corresponding to the eigenvalue of 1 is [2/3, 1/3], which represents the long-term distribution of the population between states A and B.
+
+    $$
+    P^n = \begin{bmatrix}
+    0.6 & 0.4 \\
+    0.6 & 0.4
+    \end{bmatrix}^n \rightarrow \begin{bmatrix}
+    2/3 & 1/3 \\
+    2/3 & 1/3
+    \end{bmatrix} \text{ as } n \rightarrow \infty
+    $$
+
+    **Level 3: Analogy of Markov Matrices to a Game of Dice (LaTeX)**
+
+    To understand the concept of Markov matrices, let's consider a game of dice. Imagine you have two dice, one red and one blue. The red die has 4 sides with the number 1, and 2 sides with the number 2. The blue die has 3 sides with the number 1, and 3 sides with the number 2. You roll both dice and add up the numbers.
+
+    The probability of getting a sum of 2 is 2/36 (roll a 1 on the red die and a 1 on the blue die), and the probability of getting a sum of 3 is 4/36 (roll a 1 on the red die and a 2 on the blue die, or roll a 2 on the red die and a 1 on the blue die). We can represent this system with a Markov matrix:
+
+    $$
+    P = \begin{bmatrix}
+    2/36 & 4/36 \\
+    3/36 & 9/36
     \end{bmatrix}
-    This new matrix still represents a valid Markov matrix, as the entries are non-negative and the columns sum to 1.
-    Level 3:
-    Now, let's talk about the long-term behavior of Markov matrix systems. As we raise the matrix to higher and higher powers, the system approaches a steady state. This steady state is represented by the eigenvector corresponding to the eigenvalue of 1.
-    For example, consider the Markov matrix from before:
-    \begin{bmatrix}
-    0.5 & 0.5 \\
-    0.3 & 0.7
-    \end{bmatrix}
-    The eigenvalues for this matrix are 1 and 0.4. The eigenvector corresponding to the eigenvalue of 1 is [0.6, 0.4]. As we raise the matrix to higher powers, the system approaches this steady state.
-    This steady state represents the long-term behavior of the system. In our example, it tells us that over time, the system will approach a state where 60% of the population is in state A and 40% is in state B.
-    So, in essence, Markov matrices provide a powerful tool for describing and analyzing systems where population moves between states with probabilities as matrix entries. The long-term behavior of these systems approaches a steady state, represented by the eigenvector corresponding to the eigenvalue of 1.
+    $$
+
+    The eigenvalues of P are 1 and 1/4. The eigenvector corresponding to the eigenvalue of 1 is [4/7, 3/7], which represents the long-term distribution of the sums of the dice rolls.
+
+    In this way, Markov matrices can be thought of as a mathematical representation of a game of chance, where the probabilities of different outcomes are used to describe the transitions between states.
     """#
 }
-
