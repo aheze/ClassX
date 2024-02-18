@@ -52,10 +52,15 @@ class WhisperViewModel: ObservableObject {
     @Published var unconfirmedText: [String] = []
     @Published var transcriptionTask: Task<Void, Never>? = nil
     @Published var currentText: String = ""
-    
+
     // MARK: - Server
+
     var currentUploadNumber = 0
-    
+
+    // MARK: - Visualizations
+
+    @Published var displayedVisualizations = [Visualization]()
+
     var cancellables = Set<AnyCancellable>()
 
     init() {
@@ -190,43 +195,6 @@ extension WhisperViewModel {
     }
 }
 
-extension WhisperViewModel {
-    func listen() {
-//        Publishers.CombineLatest($confirmedSegments, $unconfirmedSegments)
-//            .map {
-//                $0 + $1
-//            }
-        $confirmedSegments
-            .dropFirst()
-            .sink { [weak self] confirmedSegments in
-                guard let self else { return }
-
-                
-                let segments = confirmedSegments.map { $0.text.trimmingCharacters(in: .whitespacesAndNewlines) }
-                let upload = WhisperUpload(uploadNumber: self.currentUploadNumber, segments: segments)
-                
-                let encoder = JSONEncoder()
-                encoder.outputFormatting = .prettyPrinted
-
-                do {
-                    let data = try encoder.encode(upload)
-                    guard let string = String(data: data, encoding: .utf8) else {
-                        print("Couldn't make string from data")
-                        return
-                    }
-                    
-                    self.currentUploadNumber += 1
-                    
-                    print(string)
-                    
-                } catch {
-                    print("Error encoding: \(error)")
-                }
-            }
-            .store(in: &cancellables)
-    }
-}
-
 // MARK: - Transcription
 
 extension WhisperViewModel {
@@ -245,7 +213,7 @@ extension WhisperViewModel {
         isRecording = false
         isTranscribing = false
         whisperKit?.audioProcessor.stopRecording()
-        
+
 //        currentText = ""
 //        unconfirmedText = []
 
@@ -254,7 +222,7 @@ extension WhisperViewModel {
         lastBufferSize = 0
         lastConfirmedSegmentEndSeconds = 0
         requiredSegmentsForConfirmation = 2
-        
+
 //        confirmedSegments = []
 //        unconfirmedSegments = []
     }
@@ -426,7 +394,7 @@ extension WhisperViewModel {
             guard let segments = transcription?.segments else {
                 return
             }
-            
+
             self.confirmedSegments = segments
 
 //            self.tokensPerSecond = transcription?.timings?.tokensPerSecond ?? 0

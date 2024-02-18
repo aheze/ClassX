@@ -18,11 +18,12 @@ struct WhisperUpload: Codable {
     var segments: [String]
 }
 
-enum VisualizationType: Codable {
+enum VisualizationType: String, Codable {
     case latex
     case url
     case image
     case plainText
+    case bullet
 }
 
 struct Visualization: Codable {
@@ -38,7 +39,7 @@ struct Visualization: Codable {
     var mainBody: String?
     
     // e.g. 3b1b
-    var sourceTitle: String?
+//    var sourceTitle: String?
 }
 
 struct ServerResponse: Codable {
