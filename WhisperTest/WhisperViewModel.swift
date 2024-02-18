@@ -22,8 +22,6 @@ class WhisperViewModel: ObservableObject {
     var whisperKit: WhisperKit?
     var selectedModel = "base.en"
     
-    @Published var initial = true
-    @Published var expanded = false
 
     // MARK: - Loading
 
