@@ -8,6 +8,33 @@
 
 import SwiftUI
 
+struct TestingConfiguration {
+    var mockTranscript: String
+    var snapshots: [Snapshot]
+
+    struct Snapshot {
+        var visualizations: [Visualization]
+    }
+
+    static let mock = TestingConfiguration(
+        mockTranscript: TestingData.script,
+        snapshots: [
+            Snapshot(
+                visualizations: [
+                    Visualization(id: UUID().uuidString, visualizationType: .image, mainBody: "https://www.mathworks.com/help/examples/econ/win64/VisualizeMarkovChainStructureAndEvolutionExample_01.png")
+                ]
+            ),
+            Snapshot(
+                visualizations: [
+                    Visualization(id: UUID().uuidString, visualizationType: .image, mainBody: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Markovkate_01.svg/260px-Markovkate_01.svg.png"),
+                    Visualization(id: UUID().uuidString, visualizationType: .plainText, mainBody: "Here is some plain text!")
+                ]
+            ),
+            Snapshot(visualizations: []) // nothing for the 3rd line
+        ]
+    )
+}
+
 enum TestingData {
     static let script = """
     What's a Markov matrix?

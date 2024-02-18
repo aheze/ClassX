@@ -31,7 +31,7 @@ class WhisperViewModel: ObservableObject {
 
     @Published var isRecording = false
     @Published var isTranscribing = false
-    @Published var testingText: String? = TestingData.script
+    @Published var testingConfiguration: TestingConfiguration? = TestingConfiguration.mock
 
     // MARK: - Configuration
 
@@ -123,9 +123,9 @@ extension WhisperViewModel {
         let chunkLength = Float(2.0)
         let wordLength = Float(0.19)
 
-        guard let testingText else { return }
+        guard let testingConfiguration else { return }
 
-        let chunked = testingText.components(separatedBy: .newlines)
+        let chunked = testingConfiguration.mockTranscript.components(separatedBy: .newlines)
 
         Task {
             var previousChunk: String?

@@ -21,6 +21,7 @@ struct WhisperUpload: Codable {
 enum VisualizationType: Codable {
     case latex
     case url
+    case image
     case plainText
 }
 
@@ -32,6 +33,8 @@ struct Visualization: Codable {
     
     // for latex: the latex
     // for url: the url
+    // for image: the url of the image
+    // for plainText: just the text to show
     var mainBody: String?
     
     // e.g. 3b1b

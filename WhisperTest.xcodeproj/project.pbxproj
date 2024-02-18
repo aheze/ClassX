@@ -53,6 +53,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3C27F30E2B81F16300F0DA28 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3CE0199C2B80C879007BB8ED /* ContentView.swift */,
+				3CA7757E2B81BA7B009C525C /* TranscriptView.swift */,
+				3CA775852B81BDBE009C525C /* Visualizations */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		3CA775852B81BDBE009C525C /* Visualizations */ = {
 			isa = PBXGroup;
 			children = (
@@ -84,11 +94,9 @@
 				3CE019BF2B80D3DB007BB8ED /* openai_whisper-base.en */,
 				3CE0199A2B80C879007BB8ED /* WhisperTestApp.swift */,
 				3C27F3082B81E4FB00F0DA28 /* Model.swift */,
-				3CE019AD2B80C8F8007BB8ED /* WhisperViewModel.swift */,
 				3CA7757C2B81B736009C525C /* TestingData.swift */,
-				3CE0199C2B80C879007BB8ED /* ContentView.swift */,
-				3CA7757E2B81BA7B009C525C /* TranscriptView.swift */,
-				3CA775852B81BDBE009C525C /* Visualizations */,
+				3CE019AD2B80C8F8007BB8ED /* WhisperViewModel.swift */,
+				3C27F30E2B81F16300F0DA28 /* Views */,
 				3CE0199E2B80C87A007BB8ED /* Assets.xcassets */,
 				3CE019A02B80C87A007BB8ED /* Preview Content */,
 			);
