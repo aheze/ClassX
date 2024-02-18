@@ -15,5 +15,12 @@ struct WhisperTestApp: App {
             ContentView()
         }
         .windowStyle(.plain)
+        
+        WindowGroup(for: Visualization.self) { $visualization in
+            if let visualization {
+                VisualizationDetail(visualization: visualization)
+            }
+        }
+        .defaultSize(width: 900, height: 700)
     }
 }

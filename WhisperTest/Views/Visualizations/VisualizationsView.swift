@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct VisualizationsView: View {
+    @Environment(\.openWindow) var openWindow
+
     @ObservedObject var whisperViewModel: WhisperViewModel
 
     var body: some View {
@@ -41,19 +43,15 @@ struct VisualizationsView: View {
 
                     switch visualization.visualizationType {
                     case .latex:
-                        LatexVisualization(string: visualization.mainBody ?? "")
+                        contextButton(title: "Breakdown", color: .indigo, visualization: visualization)
                     case .url:
                         URLVisualization(urlString: visualization.mainBody ?? "")
                     case .image:
                         ImageVisualization(urlString: visualization.mainBody ?? "")
                     case .plainText:
-                        Text(visualization.mainBody ?? "")
-                            .padding(.horizontal, 32)
-                            .padding(.vertical, 24)
+                        contextButton(title: "More Context", color: .orange, visualization: visualization)
                     case .bullet:
-                        Text(visualization.mainBody ?? "")
-                            .padding(.horizontal, 32)
-                            .padding(.vertical, 24)
+                        contextButton(title: "Further Reading", color: .purple, visualization: visualization)
                     }
 
                     if index < displayedVisualizations.count - 1 {
@@ -65,5 +63,35 @@ struct VisualizationsView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.spring, value: displayedVisualizations.map { $0.id })
         .font(.system(size: 24))
+    }
+
+    func contextButton(title: String, color: Color, visualization: Visualization) -> some View {
+        Button {
+            openWindow(value: visualization)
+        } label: {
+            VStack(alignment: .leading, spacing: 30) {
+                HStack {
+                    Spacer()
+                    
+                    Image(systemName: "arrow.up.right")
+                        .font(.system(size: 32))
+                }
+
+                Text(title)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .foregroundColor(color)
+            .padding(.horizontal, 24)
+            .padding(.vertical, 16)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(color.gradient)
+                    .brightness(0.95)
+                    .opacity(0.3)
+            )
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, 32)
+        .padding(.vertical, 32)
     }
 }

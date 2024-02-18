@@ -15,19 +15,15 @@ struct LatexVisualization: View {
     var body: some View {
         let parts = LatexModel.getParts(inputText: string)
         
-        ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                ForEach(parts) { part in
-                    switch part.content {
-                    case .latex(let text):
-                        MathView(equation: text, fontSize: 38)
-                    case .normal(let text):
-                        Text(.init(text))
-                    }
+        VStack(alignment: .leading, spacing: 20) {
+            ForEach(parts) { part in
+                switch part.content {
+                case .latex(let text):
+                    MathView(equation: text, fontSize: 24)
+                case .normal(let text):
+                    Text(.init(text))
                 }
             }
-            .padding(.horizontal, 32)
-            .padding(.vertical, 24)
         }
     }
 }
