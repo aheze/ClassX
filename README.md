@@ -37,4 +37,4 @@ visionOS
 
 Good luck 🫠 ...
 
-But seriously, kindly DM us on [Twitter](https://x.com/photomz) if you really want help. But first you pay an entry fee of $3500 for the Vision Pro LMFAO
+But seriously, kindly DM us on [Twitter](https://x.com/photon_mz) if you really want help. But first you pay an entry fee of $3500 for the Vision Pro LMFAO
